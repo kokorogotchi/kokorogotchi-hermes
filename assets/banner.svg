@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280">
+  <defs>
+    <linearGradient id="topRule" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="4%" stop-color="transparent"/>
+      <stop offset="28%" stop-color="#c23020"/>
+      <stop offset="72%" stop-color="#c8980e"/>
+      <stop offset="96%" stop-color="transparent"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c23020" stop-opacity="0.08"/>
+      <stop offset="60%" stop-color="#c8980e" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#080604" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sideLine" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="30%" stop-color="#6a6050" stop-opacity="0.3"/>
+      <stop offset="70%" stop-color="#6a6050" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="280" fill="#080604"/>
+
+  <!-- Ambient glow -->
+  <ellipse cx="450" cy="140" rx="360" ry="140" fill="url(#glow)"/>
+
+  <!-- Top vermilion-gold rule -->
+  <rect x="0" y="0" width="900" height="2" fill="url(#topRule)"/>
+
+  <!-- Side lines -->
+  <rect x="40" y="0" width="1" height="280" fill="url(#sideLine)"/>
+  <rect x="859" y="0" width="1" height="280" fill="url(#sideLine)" opacity="0.6"/>
+
+  <!-- Eyebrow text -->
+  <text x="450" y="70" text-anchor="middle"
+        font-family="sans-serif" font-size="9" font-weight="700"
+        letter-spacing="6" fill="#c23020" text-transform="uppercase">
+    HERMES PLUGIN
+  </text>
+
+  <!-- Main title 妖怪ごっち -->
+  <text x="450" y="150" text-anchor="middle"
+        font-family="'Noto Serif JP', serif" font-weight="900"
+        font-size="72" letter-spacing="8" fill="#ede5d0">
+    妖<tspan fill="#c23020">怪</tspan>ごっち
+  </text>
+
+  <!-- Subtitle -->
+  <text x="450" y="190" text-anchor="middle"
+        font-family="'IM Fell English', Georgia, serif" font-style="italic"
+        font-size="18" fill="#6a6050" letter-spacing="2">
+    Kokorogotchi — a spirit companion for Hermes
+  </text>
+
+  <!-- Tagline -->
+  <text x="450" y="230" text-anchor="middle"
+        font-family="'IM Fell English', Georgia, serif"
+        font-size="14" fill="#c8bea8" letter-spacing="1">
+    Evolves based on how you treat it. Neglect it and it fades. Care for it and it transcends.
+  </text>
+
+  <!-- Bottom rule -->
+  <rect x="200" y="260" width="500" height="1" fill="#1e1a14"/>
+</svg>
