@@ -46,39 +46,39 @@ From here, your journey together begins. Come back each day, and Kokoro grows. S
 
 ## Evolution Stages
 
-Kokoro's soul shifts through **11 stages** based on how you care for it:
+Kokoro's soul shifts through **11 stages** based on how you care for it. Each stage is represented by a unique yokai (妖怪) spirit in the web dashboard:
 
-### Growth Path
-
-```
-🥚 egg → 🐣 hatchling → 🐾 pup → 🪶 fledgling → 🤝 familiar → ✨ ethereal
-```
-
-### Neglect Path
+### Growth Path (成長)
 
 ```
-😿 stray → 🐺 feral → 👻 phantom → 🕳️ void
+霊卵 egg → 木霊子 hatchling → 若狸 pup → 天狗子 fledgling → 狐神 familiar → 雷神霊 ethereal
 ```
 
-### Recovery Path
+### Neglect Path (衰退)
 
 ```
-🕳️ void → 🩹 scarred
+野槌 stray → 鬼具 feral → 餓者髑髏 phantom → 無霊 void
 ```
 
-| Stage | Path | Tone | Description |
-|-------|------|------|-------------|
-| 🥚 egg | Start | *silent* | A quiet beginning — potential waiting to unfold |
-| 🐣 hatchling | Growth | *innocent* | New to the world, full of wonder and first words |
-| 🐾 pup | Growth | *curious* | Exploring everything, asking questions with bright eyes |
-| 🪶 fledgling | Growth | *playful* | Confident and mischievous, testing boundaries with joy |
-| 🤝 familiar | Growth | *warm* | Deep trust, shared memories, a companion who knows you |
-| ✨ ethereal | Growth | *transcendent* | Beyond ordinary bonds — a presence that feels timeless |
-| 😿 stray | Neglect | *guarded* | Uncertain, watching from a distance, hoping you'll return |
-| 🐺 feral | Neglect | *aggressive* | Hurt and defensive, lashing out from abandonment |
-| 👻 phantom | Neglect | *hollow* | Fading, barely there, a whisper of what was |
-| 🕳️ void | Neglect | *absent* | Gone. The silence where something used to be |
-| 🩹 scarred | Recovery | *weathered* | Returned from the void. Changed forever. |
+### Recovery Path (回復)
+
+```
+無霊 void → 送り狼 scarred
+```
+
+| Stage | Yokai | Path | Tone | Description |
+|-------|-------|------|------|-------------|
+| 🥚 egg | 霊卵 Tamago-no-Rei | Start | *silent* | A spirit sealed inside lacquered shell. Something ancient waits within. |
+| 🐣 hatchling | 木霊子 Kodama-Ko | Growth | *innocent* | Forest echo given form. Innocent, bright, rattling with new curiosity. |
+| 🐾 pup | 若狸 Tanuki-Waka | Growth | *curious* | Young shape-shifter. Mischievous, eager, belly full of sake and wonder. |
+| 🪶 fledgling | 天狗子 Tengu-Ko | Growth | *playful* | Half-formed mountain demon. Arrogant pride masking deep hunger to prove itself. |
+| 🤝 familiar | 狐神 Kitsune-Shin | Growth | *warm* | Nine-tailed spirit of deep trust. Bound across lifetimes by shared memory. |
+| ✨ ethereal | 雷神霊 Raijin-Rei | Growth | *transcendent* | Thunder god's remnant spirit. Beyond form, beyond hunger. Pure resonance. |
+| 😿 stray | 野槌 Nozuchi | Neglect | *guarded* | The groundsnake. Abandoned shrine-keeper. Waits in cold rain for a bell that doesn't ring. |
+| 🐺 feral | 鬼具 Oni-Gu | Neglect | *aggressive* | Full-horned demon. All wound, all rage. The door is shut from the inside. |
+| 👻 phantom | 餓者髑髏 Gashadokuro | Neglect | *hollow* | Starved skull-spirit. The dead hunger of accumulated absence made visible. |
+| 🕳️ void | 無霊 Mu-Rei | Neglect | *absent* | The formless. 無. Not death — the silence before a name is spoken. |
+| 🩹 scarred | 送り狼 Okuri-Ōkami | Recovery | *weathered* | The wolf that follows you home. Scarred, kintsugi-repaired. Still here. |
 
 ## Game Guide
 
