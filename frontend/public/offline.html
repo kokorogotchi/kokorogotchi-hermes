@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kokorogotchi — Offline</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #1a1a2e;
+      color: #e2e8f0;
+      font-family: 'Press Start 2P', monospace;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 320px;
+    }
+
+    .emoji {
+      font-size: 64px;
+      margin-bottom: 24px;
+      animation: floatBob 3s ease-in-out infinite;
+    }
+
+    h1 {
+      font-size: 11px;
+      line-height: 1.8;
+      color: #94a3b8;
+      margin-bottom: 16px;
+    }
+
+    p {
+      font-size: 8px;
+      line-height: 2;
+      color: #475569;
+    }
+
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.08) 2px,
+        rgba(0, 0, 0, 0.08) 4px
+      );
+    }
+
+    @keyframes floatBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="container">
+    <div class="emoji">💤</div>
+    <h1>Kokoro is sleeping...</h1>
+    <p>Reconnect to wake up.</p>
+  </div>
+</body>
+</html>
