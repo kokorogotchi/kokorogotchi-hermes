@@ -1,4 +1,6 @@
-![Hermes Agent](assets/banner.png)
+<p align="center">
+  <img src="assets/banner.svg" alt="妖怪ごっち — Kokorogotchi" width="100%" />
+</p>
 
 # kokorogotchi
 
