@@ -4,17 +4,17 @@
  */
 
 export const STAGES = {
-  egg:       { emoji: "🥚", label: "Egg",       path: "start",    tone: "silent",       color: "#b8c4d0" },
-  hatchling: { emoji: "🐣", label: "Hatchling", path: "growth",   tone: "innocent",     color: "#fde68a" },
-  pup:       { emoji: "🐾", label: "Pup",       path: "growth",   tone: "curious",      color: "#86efac" },
-  fledgling: { emoji: "🪶", label: "Fledgling", path: "growth",   tone: "playful",      color: "#67e8f9" },
-  familiar:  { emoji: "🤝", label: "Familiar",  path: "growth",   tone: "warm",         color: "#fca5a5" },
-  ethereal:  { emoji: "✨", label: "Ethereal",  path: "growth",   tone: "transcendent", color: "#e9d5ff" },
-  stray:     { emoji: "😿", label: "Stray",     path: "neglect",  tone: "guarded",      color: "#d1d5db" },
-  feral:     { emoji: "🐺", label: "Feral",     path: "neglect",  tone: "aggressive",   color: "#fca5a5" },
-  phantom:   { emoji: "👻", label: "Phantom",   path: "neglect",  tone: "hollow",       color: "#c4b5fd" },
-  void:      { emoji: "🕳️", label: "Void",      path: "neglect",  tone: "absent",       color: "#374151" },
-  scarred:   { emoji: "🩹", label: "Scarred",   path: "recovery", tone: "weathered",    color: "#d97706" },
+  egg:       { emoji: "🥚", label: "Egg",       path: "start",    tone: "silent",       color: "#8ba8b8" },
+  hatchling: { emoji: "🐣", label: "Hatchling", path: "growth",   tone: "innocent",     color: "#a8c878" },
+  pup:       { emoji: "🐾", label: "Pup",       path: "growth",   tone: "curious",      color: "#c8a060" },
+  fledgling: { emoji: "🪶", label: "Fledgling", path: "growth",   tone: "playful",      color: "#e08040" },
+  familiar:  { emoji: "🤝", label: "Familiar",  path: "growth",   tone: "warm",         color: "#d4785a" },
+  ethereal:  { emoji: "✨", label: "Ethereal",  path: "growth",   tone: "transcendent", color: "#b090e8" },
+  stray:     { emoji: "😿", label: "Stray",     path: "neglect",  tone: "guarded",      color: "#708090" },
+  feral:     { emoji: "🐺", label: "Feral",     path: "neglect",  tone: "aggressive",   color: "#c03020" },
+  phantom:   { emoji: "👻", label: "Phantom",   path: "neglect",  tone: "hollow",       color: "#a090c8" },
+  void:      { emoji: "🕳️", label: "Void",      path: "neglect",  tone: "absent",       color: "#202830" },
+  scarred:   { emoji: "🩹", label: "Scarred",   path: "recovery", tone: "weathered",    color: "#b87820" },
 };
 
 /** Path display metadata */

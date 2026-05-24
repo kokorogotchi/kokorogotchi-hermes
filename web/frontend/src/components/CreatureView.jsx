@@ -1,29 +1,30 @@
 import React from 'react'
 import { STAGES, PATHS } from '../utils/stages'
+import { SPRITES } from '../utils/sprites'
 import DriftMeter from './DriftMeter'
 
 /**
- * Main creature display — sleek card with emoji, name, meter, stats.
+ * Main creature display — sleek card with yokai SVG, name, meter, stats.
  */
 export default function CreatureView({ state }) {
   if (!state) return null
 
-  const stage = STAGES[state.evolution_stage] || STAGES.egg
+  const stageKey = state.evolution_stage || 'egg'
+  const stage = STAGES[stageKey] || STAGES.egg
   const pathInfo = PATHS[stage.path] || PATHS.start
+  const sprite = SPRITES[stageKey] || SPRITES.egg
 
   return (
     <div className="card fade-in" style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center',
       gap: 18, padding: '22px 20px 20px',
     }}>
-      {/* Stage emoji with soft glow */}
+      {/* Yokai SVG sprite with soft glow */}
       <div className="float-anim" style={{
-        fontSize: 72, lineHeight: 1, userSelect: 'none',
+        width: 140, height: 160, userSelect: 'none',
         filter: `drop-shadow(0 0 18px ${stage.color}44) drop-shadow(0 0 40px ${stage.color}22)`,
         transition: 'filter 2s ease',
-      }}>
-        {stage.emoji}
-      </div>
+      }} dangerouslySetInnerHTML={{ __html: sprite }} />
 
       {/* Drift meter */}
       <DriftMeter drift={state.drift ?? 0} />
