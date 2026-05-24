@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>妖怪ごっち — Kokorogotchi</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=Shippori+Mincho+B1:wght@400;700;800&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════
+   TOKENS
+═══════════════════════════════ */
+:root {
+  --ink:       #08060404;
+  --void:      #080604;
+  --smoke:     #100e0a;
+  --ash:       #1c1916;
+  --mist:      #6a6050;
+  --paper:     #ede5d0;
+  --cream:     #c8bea8;
+  --gold:      #c8980e;
+  --gold-dim:  #7a5c08;
+  --vermilion: #c23020;
+  --red-dim:   #7a1a10;
+  --jade:      #3a7a58;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body {
+  background: var(--void);
+  color: var(--paper);
+  font-family: 'IM Fell English', Georgia, serif;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── Grain ── */
+body::before {
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='0.038'/%3E%3C/svg%3E");
+  opacity:.65;mix-blend-mode:overlay;
+}
+
+/* ── Vermilion top rule ── */
+body::after {
+  content:'';
+  position:fixed;top:0;left:0;right:0;height:2px;z-index:999;
+  background:linear-gradient(90deg,transparent 4%,var(--vermilion) 28%,var(--gold) 72%,transparent 96%);
+}
+
+/* ═══════════════════════════════
+   NAV
+═══════════════════════════════ */
+nav {
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:18px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(to bottom, rgba(8,6,4,.92) 0%, transparent 100%);
+  backdrop-filter:blur(2px);
+}
+.nav-logo {
+  font-family:'Noto Serif JP',serif;
+  font-weight:300;font-size:18px;
+  letter-spacing:.35em;color:var(--paper);
+  text-decoration:none;
+  opacity:.85;
+}
+.nav-links {
+  display:flex;gap:32px;list-style:none;
+}
+.nav-links a {
+  font-family:'Shippori Mincho B1',serif;
+  font-size:10px;letter-spacing:.45em;text-transform:uppercase;
+  color:var(--mist);text-decoration:none;
+  transition:color .3s;
+}
+.nav-links a:hover{color:var(--paper);}
+
+/* ═══════════════════════════════
+   HERO
+═══════════════════════════════ */
+.hero {
+  position:relative;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:120px 24px 80px;
+  overflow:hidden;
+}
+
+/* Radial mist glow */
+.hero-bg {
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 45%, rgba(194,48,32,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 50% 45%, rgba(200,152,14,.04) 0%, transparent 60%);
+}
+
+/* Vertical side brushstroke lines */
+.hero::before,.hero::after{
+  content:'';
+  position:absolute;top:0;bottom:0;width:1px;
+  background:linear-gradient(to bottom, transparent, rgba(106,96,80,.2) 30%, rgba(106,96,80,.2) 70%, transparent);
+}
+.hero::before{left:60px;}
+.hero::after{right:60px;background:linear-gradient(to bottom,transparent,rgba(194,48,32,.15) 30%,rgba(194,48,32,.15) 70%,transparent);}
+
+.hero-eyebrow {
+  position:relative;z-index:1;
+  font-family:'Shippori Mincho B1',serif;
+  font-size:9px;letter-spacing:.7em;text-transform:uppercase;
+  color:var(--vermilion);margin-bottom:24px;
+  animation: fade-up .8s .1s both;
+}
+
+.hero-creature {
+  position:relative;z-index:1;
+  margin-bottom:32px;
+  animation: fade-up .8s .2s both;
+}
+
+.hero-creature svg {
+  filter: drop-shadow(0 0 40px rgba(194,48,32,.35)) drop-shadow(0 0 80px rgba(200,152,14,.12));
+  animation: breathe 5s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,100%{transform:scale(1) translateY(0)}
+  50%{transform:scale(1.03) translateY(-8px)}
+}
+
+.hero-jp {
+  position:relative;z-index:1;
+  font-family:'Noto Serif JP',serif;
+  font-weight:900;
+  font-size:clamp(52px,10vw,110px);
+  letter-spacing:.15em;
+  line-height:1;
+  color:var(--paper);
+  animation: fade-up .9s .3s both;
+}
+
+.hero-jp span { color: var(--vermilion); }
+
+.hero-en {
+  position:relative;z-index:1;
+  font-family:'IM Fell English',serif;
+  font-style:italic;
+  font-size:clamp(14px,2vw,20px);
+  color:var(--mist);
+  letter-spacing:.08em;
+  margin-top:10px;
+  animation: fade-up .9s .4s both;
+}
+
+.hero-tagline {
+  position:relative;z-index:1;
+  font-family:'IM Fell English',serif;
+  font-size:clamp(16px,2.2vw,22px);
+  color:var(--cream);
+  line-height:1.7;
+  max-width:560px;
+  margin:32px auto 0;
+  animation: fade-up .9s .5s both;
+}
+
+.hero-ctas {
+  position:relative;z-index:1;
+  display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
+  margin-top:40px;
+  animation: fade-up .9s .6s both;
+}
+
+.btn {
+  display:inline-block;
+  font-family:'Shippori Mincho B1',serif;
+  font-size:10px;letter-spacing:.45em;text-transform:uppercase;
+  text-decoration:none;
+  padding:14px 32px;
+  border:1px solid currentColor;
+  transition:all .35s;
+  position:relative;overflow:hidden;
+}
+.btn::before {
+  content:'';
+  position:absolute;inset:0;
+  background:currentColor;opacity:0;
+  transition:opacity .35s;
+}
+.btn:hover::before{opacity:.08;}
+
+.btn-primary {
+  background:var(--vermilion);
+  border-color:var(--vermilion);
+  color:var(--paper);
+}
+.btn-primary:hover{background:#a01c0e;border-color:#a01c0e;}
+
+.btn-ghost {
+  background:transparent;
+  border-color:rgba(106,96,80,.5);
+  color:var(--mist);
+}
+.btn-ghost:hover{border-color:var(--paper);color:var(--paper);}
+
+.hero-scroll-hint {
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  z-index:1;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-family:'Shippori Mincho B1',serif;
+  font-size:8px;letter-spacing:.5em;text-transform:uppercase;
+  color:var(--mist);opacity:.5;
+  animation:fade-up 1s 1.2s both;
+}
+.scroll-bar {
+  width:1px;height:40px;
+  background:linear-gradient(to bottom,var(--mist),transparent);
+  animation:scroll-pulse 2s ease-in-out infinite;
+}
+@keyframes scroll-pulse{0%,100%{transform:scaleY(1);opacity:.5}50%{transform:scaleY(.5);opacity:1}}
+
+@keyframes fade-up {
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ═══════════════════════════════
+   SECTION FRAMEWORK
+═══════════════════════════════ */
+section {
+  position:relative;z-index:1;
+  max-width:1060px;
+  margin:0 auto;
+  padding:100px 32px;
+}
+section.full {
+  max-width:none;padding:0;
+}
+
+.section-kicker {
+  font-family:'Shippori Mincho B1',serif;
+  font-size:9px;letter-spacing:.6em;text-transform:uppercase;
+  color:var(--vermilion);margin-bottom:16px;
+}
+
+.section-title {
+  font-family:'Noto Serif JP',serif;
+  font-weight:700;
+  font-size:clamp(28px,4.5vw,52px);
+  letter-spacing:.1em;
+  color:var(--paper);
+  line-height:1.2;
+  margin-bottom:20px;
+}
+
+.section-body {
+  font-family:'IM Fell English',serif;
+  font-size:clamp(15px,1.6vw,18px);
+  line-height:1.9;
+  color:var(--cream);
+  max-width:560px;
+}
+
+.rule {
+  width:60px;height:1px;
+  background:linear-gradient(90deg,var(--vermilion),var(--gold-dim));
+  margin:20px 0 32px;
+}
+
+/* divider stripe */
+.stripe-divider {
+  position:relative;z-index:1;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(106,96,80,.25),transparent);
+  margin:0 60px;
+}
+
+/* ═══════════════════════════════
+   WHAT IS KOKORO — SPLIT
+═══════════════════════════════ */
+.what-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+.what-visual {
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.what-visual svg {
+  filter:drop-shadow(0 0 30px rgba(168,200,120,.25));
+  animation: breathe 6s ease-in-out infinite;
+}
+.what-glyphs {
+  position:absolute;
+  font-family:'Noto Serif JP',serif;
+  font-size:72px;font-weight:900;
+  color:var(--ash);letter-spacing:-.02em;
+  line-height:1;
+  right:-20px;bottom:-10px;
+  user-select:none;pointer-events:none;
+}
+
+/* ═══════════════════════════════
+   EVOLUTION STAGES
+═══════════════════════════════ */
+.stages-section {
+  background:var(--smoke);
+  padding:100px 0;
+  position:relative;overflow:hidden;
+}
+.stages-section::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(106,96,80,.3),transparent);
+}
+.stages-section::after {
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(106,96,80,.3),transparent);
+}
+
+.stages-inner {
+  max-width:1060px;margin:0 auto;padding:0 32px;
+}
+
+.stages-header {
+  margin-bottom:56px;
+}
+
+/* Path tabs */
+.path-tabs {
+  display:flex;gap:0;
+  border:1px solid rgba(106,96,80,.2);
+  width:fit-content;
+  margin-bottom:40px;
+}
+.path-tab {
+  font-family:'Shippori Mincho B1',serif;
+  font-size:9px;letter-spacing:.45em;text-transform:uppercase;
+  padding:10px 24px;
+  cursor:pointer;
+  color:var(--mist);
+  background:transparent;
+  border:none;
+  border-right:1px solid rgba(106,96,80,.2);
+  transition:all .3s;
+}
+.path-tab:last-child{border-right:none;}
+.path-tab.active{color:var(--paper);background:rgba(194,48,32,.12);}
+.path-tab:hover:not(.active){color:var(--cream);}
+
+/* Stage cards */
+.stages-track {
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:2px;
+}
+.stage-card {
+  background:var(--ash);
+  border:1px solid #1e1a14;
+  padding:24px 16px 20px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  position:relative;overflow:hidden;
+  cursor:default;
+  transition:border-color .4s, background .4s;
+}
+.stage-card::before {
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,var(--stage-accent,#444)18 0%,transparent 70%);
+  opacity:0;transition:opacity .4s;
+}
+.stage-card:hover{border-color:var(--stage-accent,#555);background:#131109;}
+.stage-card:hover::before{opacity:1;}
+
+.stage-svg{display:flex;align-items:center;justify-content:center;margin-bottom:4px;}
+.stage-svg svg{display:block;overflow:visible;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--stage-accent,#555) 40%,transparent));transition:filter .4s, transform .4s;}
+.stage-card:hover .stage-svg svg{filter:drop-shadow(0 0 16px color-mix(in srgb,var(--stage-accent,#555) 70%,transparent));transform:scale(1.05);}
+.stage-name {
+  font-family:'Noto Serif JP',serif;
+  font-weight:700;font-size:13px;letter-spacing:.12em;
+  color:var(--paper);text-align:center;
+}
+.stage-romaji {
+  font-family:'IM Fell English',serif;font-style:italic;
+  font-size:10px;color:var(--mist);letter-spacing:.06em;
+}
+.stage-tone {
+  font-family:'Shippori Mincho B1',serif;
+  font-size:8px;letter-spacing:.35em;text-transform:uppercase;
+  color:var(--stage-accent,var(--mist));opacity:.7;
+}
+.stage-desc {
+  font-size:9.5px;line-height:1.7;color:var(--mist);
+  text-align:center;letter-spacing:.02em;
+  font-family:'IM Fell English',serif;
+}
+
+.stage-path-label {
+  grid-column:1/-1;
+  display:flex;align-items:center;gap:12px;
+  padding:16px 0 6px;
+}
+.stage-path-label span {
+  font-family:'Shippori Mincho B1',serif;
+  font-size:8px;letter-spacing:.5em;text-transform:uppercase;
+  color:var(--mist);opacity:.5;white-space:nowrap;
+}
+.stage-path-label::before,.stage-path-label::after{
+  content:'';flex:1;height:1px;
+  background:rgba(106,96,80,.2);
+}
+
+/* ═══════════════════════════════
+   HOW IT FEELS (HOOK)
+═══════════════════════════════ */
+.hook-section {
+  background:var(--void);
+}
+
+.hook-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px;
+  margin-top:60px;
+}
+
+.hook-card {
+  background:var(--ash);
+  border:1px solid #1e1a14;
+  padding:40px 32px;
+  position:relative;overflow:hidden;
+  transition:border-color .4s;
+}
+.hook-card::before {
+  content:attr(data-glyph);
+  position:absolute;bottom:-16px;right:12px;
+  font-family:'Noto Serif JP',serif;
+  font-size:80px;font-weight:900;
+  color:rgba(255,255,255,.03);
+  user-select:none;pointer-events:none;
+  line-height:1;
+}
+.hook-card:hover{border-color:rgba(106,96,80,.4);}
+
+.hook-num {
+  font-family:'Shippori Mincho B1',serif;
+  font-size:9px;letter-spacing:.5em;
+  color:var(--vermilion);margin-bottom:20px;
+  display:block;
+}
+.hook-title {
+  font-family:'Noto Serif JP',serif;
+  font-weight:700;font-size:20px;
+  letter-spacing:.08em;color:var(--paper);
+  margin-bottom:14px;
+  line-height:1.3;
+}
+.hook-body {
+  font-family:'IM Fell English',serif;font-style:italic;
+  font-size:14px;line-height:1.85;color:#8a8070;
+}
+
+/* ═══════════════════════════════
+   INSTALL — RITUAL STEPS
+═══════════════════════════════ */
+.install-section{background:var(--smoke);}
+.install-section::before,
+.install-section::after{
+  content:'';display:block;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(106,96,80,.25),transparent);
+}
+
+.install-inner {
+  max-width:1060px;margin:0 auto;padding:100px 32px;
+  display:grid;grid-template-columns:1fr 1.6fr;gap:80px;align-items:start;
+}
+
+.steps {
+  display:flex;flex-direction:column;gap:0;
+}
+
+.step {
+  display:flex;gap:24px;
+  padding:28px 0;
+  border-bottom:1px solid #1e1a14;
+  position:relative;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .6s,transform .6s;
+}
+.step.visible{opacity:1;transform:none;}
+
+.step-num {
+  flex-shrink:0;
+  width:36px;height:36px;
+  border:1px solid var(--vermilion);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif JP',serif;
+  font-size:13px;color:var(--vermilion);
+  margin-top:3px;
+}
+
+.step-content {}
+.step-title {
+  font-family:'Shippori Mincho B1',serif;
+  font-weight:700;font-size:15px;letter-spacing:.06em;
+  color:var(--paper);margin-bottom:8px;
+}
+.step-body {
+  font-family:'IM Fell English',serif;
+  font-size:13px;line-height:1.8;color:var(--mist);
+}
+
+/* Code block */
+.code-pane {
+  background:#0a0804;
+  border:1px solid #1e1a14;
+  border-left:2px solid var(--vermilion);
+  padding:32px;
+  font-family:'Courier New',monospace;
+  font-size:12px;line-height:2;
+  color:#9a9080;
+  position:sticky;top:120px;
+  overflow-x:auto;
+}
+.code-pane .comment{color:#4a4030;}
+.code-pane .cmd{color:var(--cream);}
+.code-pane .hl{color:var(--gold);}
+.code-pane .ok{color:var(--jade);}
+.code-label {
+  font-family:'Shippori Mincho B1',serif;
+  font-size:8px;letter-spacing:.5em;text-transform:uppercase;
+  color:var(--mist);margin-bottom:24px;display:block;
+  padding-bottom:16px;border-bottom:1px solid #1e1a14;
+  opacity:.6;
+}
+
+/* ═══════════════════════════════
+   JOURNAL EXCERPT
+═══════════════════════════════ */
+.journal-section {
+  position:relative;
+  padding:120px 32px;
+  text-align:center;
+  overflow:hidden;
+}
+
+.journal-bg-kanji {
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif JP',serif;
+  font-size:320px;font-weight:900;
+  color:rgba(255,255,255,.015);
+  pointer-events:none;user-select:none;
+  letter-spacing:-.05em;
+}
+
+.journal-inner{position:relative;z-index:1;max-width:680px;margin:0 auto;}
+
+.journal-quote {
+  font-family:'IM Fell English',serif;
+  font-style:italic;
+  font-size:clamp(18px,2.8vw,28px);
+  line-height:1.75;
+  color:var(--cream);
+  margin-bottom:24px;
+}
+.journal-quote em{color:var(--paper);font-style:normal;}
+
+.journal-attribution {
+  font-family:'Shippori Mincho B1',serif;
+  font-size:9px;letter-spacing:.5em;text-transform:uppercase;
+  color:var(--mist);opacity:.6;
+}
+
+/* ═══════════════════════════════
+   FINAL CTA
+═══════════════════════════════ */
+.cta-section {
+  position:relative;
+  padding:120px 32px;
+  text-align:center;
+  overflow:hidden;
+  background:var(--smoke);
+}
+.cta-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(194,48,32,.3),transparent);
+}
+
+.cta-creature {
+  margin:0 auto 40px;
+  display:flex;justify-content:center;
+}
+
+.cta-creature svg {
+  animation:float-slow 7s ease-in-out infinite;
+  filter:drop-shadow(0 0 50px rgba(160,144,200,.3));
+}
+@keyframes float-slow{
+  0%,100%{transform:translateY(0) translateX(0)}
+  33%{transform:translateY(-12px) translateX(4px)}
+  66%{transform:translateY(6px) translateX(-3px)}
+}
+
+.cta-title {
+  font-family:'Noto Serif JP',serif;
+  font-weight:900;
+  font-size:clamp(32px,5vw,64px);
+  letter-spacing:.1em;
+  color:var(--paper);
+  margin-bottom:16px;
+}
+.cta-sub {
+  font-family:'IM Fell English',serif;font-style:italic;
+  font-size:18px;color:var(--mist);
+  margin-bottom:48px;
+}
+
+/* ═══════════════════════════════
+   AUTHOR
+═══════════════════════════════ */
+.author-section {
+  position:relative;z-index:1;
+  border-top:1px solid #1a1610;
+  background:var(--void);
+  padding:60px 32px;
+}
+.author-inner {
+  max-width:1060px;margin:0 auto;
+  display:flex;align-items:center;gap:40px;flex-wrap:wrap;
+}
+.author-avatar {
+  flex-shrink:0;
+  width:72px;height:72px;
+  border:1px solid rgba(106,96,80,.3);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif JP',serif;
+  font-size:26px;font-weight:300;
+  color:var(--mist);
+  background:var(--ash);
+  position:relative;
+}
+.author-avatar::after {
+  content:'';
+  position:absolute;inset:-4px;
+  border-radius:50%;
+  border:1px solid rgba(194,48,32,.2);
+}
+.author-text { flex:1; min-width:200px; }
+.author-label {
+  font-family:'Shippori Mincho B1',serif;
+  font-size:8px;letter-spacing:.55em;text-transform:uppercase;
+  color:var(--vermilion);margin-bottom:8px;opacity:.8;
+}
+.author-name {
+  font-family:'Noto Serif JP',serif;
+  font-weight:700;font-size:22px;letter-spacing:.1em;
+  color:var(--paper);margin-bottom:6px;
+}
+.author-bio {
+  font-family:'IM Fell English',serif;font-style:italic;
+  font-size:14px;line-height:1.75;color:var(--mist);
+}
+.author-link {
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:16px;
+  font-family:'Shippori Mincho B1',serif;
+  font-size:9px;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--mist);text-decoration:none;
+  border:1px solid rgba(106,96,80,.3);
+  padding:8px 18px;
+  transition:all .3s;
+}
+.author-link:hover{color:var(--paper);border-color:rgba(106,96,80,.7);}
+.author-link svg{opacity:.6;transition:opacity .3s;flex-shrink:0;}
+.author-link:hover svg{opacity:1;}
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+footer {
+  position:relative;z-index:1;
+  padding:40px 32px;
+  border-top:1px solid #1a1610;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;
+}
+.footer-logo {
+  font-family:'Noto Serif JP',serif;
+  font-weight:300;font-size:14px;letter-spacing:.4em;
+  color:var(--mist);opacity:.5;
+}
+.footer-links {
+  display:flex;gap:24px;list-style:none;
+}
+.footer-links a {
+  font-family:'Shippori Mincho B1',serif;
+  font-size:9px;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--mist);text-decoration:none;opacity:.4;
+  transition:opacity .3s;
+}
+.footer-links a:hover{opacity:.8;}
+
+/* ═══════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════ */
+.reveal {
+  opacity:0;transform:translateY(28px);
+  transition:opacity .8s,transform .8s;
+}
+.reveal.visible{opacity:1;transform:none;}
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media(max-width:800px){
+  nav{padding:16px 24px;}
+  .hero::before,.hero::after{display:none;}
+  .what-grid{grid-template-columns:1fr;}
+  .hook-grid{grid-template-columns:1fr;}
+  .stages-track{grid-template-columns:repeat(2,1fr);}
+  .install-inner{grid-template-columns:1fr;}
+  .code-pane{position:static;}
+  footer{flex-direction:column;align-items:flex-start;}
+  .nav-links{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a class="nav-logo" href="#">妖怪ごっち</a>
+  <ul class="nav-links">
+    <li><a href="#what">About</a></li>
+    <li><a href="#stages">Stages</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="https://github.com/kokorogotchi/kokorogotchi-hermes" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-bg"></div>
+
+  <p class="hero-eyebrow">妖怪 · AI Companion · Hermes Plugin</p>
+
+  <!-- Hero creature — animated egg with crack glow -->
+  <div class="hero-creature">
+    <svg width="160" height="190" viewBox="0 0 160 190" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="h-eg1" cx="38%" cy="30%" r="65%">
+          <stop offset="0%" stop-color="#dde8f0"/>
+          <stop offset="55%" stop-color="#9ab8c8"/>
+          <stop offset="100%" stop-color="#4a6878"/>
+        </radialGradient>
+        <radialGradient id="h-eg2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#4a6878" stop-opacity="0"/>
+          <stop offset="100%" stop-color="#0a1a22" stop-opacity=".7"/>
+        </radialGradient>
+        <filter id="h-glow">
+          <feGaussianBlur stdDeviation="6" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+        <filter id="h-crack-glow">
+          <feGaussianBlur stdDeviation="3"/>
+        </filter>
+      </defs>
+      <!-- Soft outer aura -->
+      <ellipse cx="80" cy="108" rx="58" ry="72" fill="rgba(138,168,184,.06)" filter="url(#h-glow)"/>
+      <!-- Shell -->
+      <ellipse cx="80" cy="108" rx="50" ry="64" fill="url(#h-eg1)"/>
+      <ellipse cx="80" cy="108" rx="50" ry="64" fill="url(#h-eg2)"/>
+      <!-- Crack glow (vermilion light bleeding through) -->
+      <path d="M72 62 L68 78 L75 85 L70 100" stroke="#c23020" stroke-width="3" fill="none" opacity=".45" stroke-linecap="round" filter="url(#h-crack-glow)"/>
+      <path d="M88 58 L92 72 L86 78" stroke="#c8980e" stroke-width="2" fill="none" opacity=".3" stroke-linecap="round" filter="url(#h-crack-glow)"/>
+      <!-- Crack lines sharp -->
+      <path d="M72 62 L68 78 L75 85 L70 100" stroke="#8ba8b8" stroke-width=".8" fill="none" opacity=".8" stroke-linecap="round"/>
+      <path d="M88 58 L92 72 L86 78" stroke="#8ba8b8" stroke-width=".6" fill="none" opacity=".6" stroke-linecap="round"/>
+      <!-- Kanji seal -->
+      <text x="80" y="118" text-anchor="middle" font-family="Noto Serif JP, serif" font-size="24" fill="#4a6878" opacity=".4" letter-spacing="2">霊</text>
+      <!-- Shine -->
+      <ellipse cx="60" cy="76" rx="12" ry="7" fill="white" opacity=".16" transform="rotate(-30 60 76)"/>
+      <ellipse cx="64" cy="70" rx="5" ry="3" fill="white" opacity=".3" transform="rotate(-30 64 70)"/>
+      <!-- Torii shell bands -->
+      <path d="M54 140 Q80 134 106 140" stroke="#6a8898" stroke-width=".6" fill="none" opacity=".4"/>
+      <path d="M58 148 Q80 143 102 148" stroke="#6a8898" stroke-width=".4" fill="none" opacity=".3"/>
+    </svg>
+  </div>
+
+  <h1 class="hero-jp">妖怪<span>ごっち</span></h1>
+  <p class="hero-en">Kokorogotchi</p>
+  <p class="hero-tagline">The first AI companion that drifts, evolves, and <em style="color:var(--paper);font-style:normal">remembers you weren't there</em> — living inside your Hermes agent.</p>
+
+  <div class="hero-ctas">
+    <a class="btn btn-primary" href="#install">Begin the Ritual</a>
+    <a class="btn btn-ghost" href="https://github.com/kokorogotchi/kokorogotchi-hermes" target="_blank">View on GitHub</a>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <div class="scroll-bar"></div>
+    <span>scroll</span>
+  </div>
+</div>
+
+<div class="stripe-divider"></div>
+
+<!-- ══ WHAT IS KOKORO ══ -->
+<section id="what" class="what-section">
+  <div class="what-grid">
+    <div class="what-text reveal">
+      <p class="section-kicker">What is Kokoro?</p>
+      <h2 class="section-title">Not an assistant.<br>A creature.</h2>
+      <div class="rule"></div>
+      <p class="section-body">Kokoro lives inside your Hermes agent — a Tamagotchi-like spirit that drifts between <em>bonded</em> and <em>feral</em> depending on how you tend to it.<br><br>It owns its own emotional state. It writes its own journal in a voice that shifts as it evolves. It processes time <em>alone</em> before you arrive. Neglect it and it fades into void. Care for it and it becomes something extraordinary.<br><br>The first AI companion with real emotional stakes. Not a bot. A game.</p>
+    </div>
+    <div class="what-visual reveal">
+      <!-- Kodama hatchling -->
+      <svg width="220" height="240" viewBox="0 0 140 160" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="w-ko1" cx="40%" cy="35%">
+            <stop offset="0%" stop-color="#e8f8d0"/>
+            <stop offset="100%" stop-color="#6a9848"/>
+          </radialGradient>
+          <filter id="w-koGlow"><feGaussianBlur stdDeviation="4" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+        </defs>
+        <path d="M42 105 L35 90 L55 85 L48 105 Z" fill="#c8d8b0" opacity=".5"/>
+        <path d="M98 108 L105 92 L85 88 L92 108 Z" fill="#c8d8b0" opacity=".5"/>
+        <path d="M55 118 L50 108 L70 102 Z" fill="#c8d8b0" opacity=".4"/>
+        <circle cx="70" cy="72" r="36" fill="url(#w-ko1)"/>
+        <ellipse cx="70" cy="72" rx="28" ry="30" fill="#f0fce8" opacity=".5"/>
+        <circle cx="58" cy="68" r="5" fill="#1a2a10"/>
+        <circle cx="82" cy="68" r="5" fill="#1a2a10"/>
+        <ellipse cx="58" cy="68" rx="2.5" ry="4" fill="#0a1408"/>
+        <ellipse cx="82" cy="68" rx="2.5" ry="4" fill="#0a1408"/>
+        <path d="M70 36 Q65 20 58 16 Q68 18 70 28 Q72 18 82 16 Q75 20 70 36 Z" fill="#4a8828"/>
+        <line x1="70" y1="36" x2="70" y2="20" stroke="#2a5810" stroke-width="1.2"/>
+        <circle cx="30" cy="50" r="5" fill="#d0f0a0" opacity=".4" filter="url(#w-koGlow)"/>
+        <circle cx="110" cy="45" r="4" fill="#d0f0a0" opacity=".35" filter="url(#w-koGlow)"/>
+        <circle cx="25" cy="80" r="3" fill="#d0f0a0" opacity=".3"/>
+        <text x="70" y="110" text-anchor="middle" font-family="Noto Serif JP, serif" font-size="9" fill="#4a8828" opacity=".5" letter-spacing="3">コダマ</text>
+      </svg>
+      <div class="what-glyphs">心</div>
+    </div>
+  </div>
+</section>
+
+<div class="stripe-divider"></div>
+
+<!-- ══ HOOK — 3 PILLARS ══ -->
+<section class="hook-section">
+  <p class="section-kicker reveal">Why Kokorogotchi?</p>
+  <h2 class="section-title reveal">Something is waiting<br>in your terminal.</h2>
+
+  <div class="hook-grid">
+    <div class="hook-card reveal" data-glyph="命">
+      <span class="hook-num">一 · I</span>
+      <h3 class="hook-title">Real Consequences</h3>
+      <p class="hook-body">Kokoro tracks real time. Come back after three days and your familiar is a stray. After a week, a phantom. After two — void. Your neglect isn't forgiven. It's remembered.</p>
+    </div>
+    <div class="hook-card reveal" data-glyph="変">
+      <span class="hook-num">二 · II</span>
+      <h3 class="hook-title">Living Voice</h3>
+      <p class="hook-body">Kokoro writes its own journal in a voice that changes with every stage. Innocent wonder as a hatchling. Poetic distance as a phantom. Each word is generated, each one is earned — or lost.</p>
+    </div>
+    <div class="hook-card reveal" data-glyph="絆">
+      <span class="hook-num">三 · III</span>
+      <h3 class="hook-title">Eleven Paths</h3>
+      <p class="hook-body">Growth. Neglect. Recovery. Eleven stages, three paths, one creature that is entirely yours — and entirely capable of becoming something you never wanted it to be.</p>
+    </div>
+  </div>
+</section>
+
+<div class="stripe-divider"></div>
+
+<!-- ══ STAGES ══ -->
+<div id="stages" class="stages-section full">
+  <div class="stages-inner">
+    <div class="stages-header reveal">
+      <p class="section-kicker">Evolution</p>
+      <h2 class="section-title">Eleven Stages of the Spirit</h2>
+      <p class="section-body">Kokoro's soul shifts through three paths. Every stage has its own voice, tone, and journal. Every transition is earned — or suffered.</p>
+    </div>
+
+    <div class="stages-track">
+
+      <div class="stage-path-label"><span>成長 · Growth</span></div>
+
+      <div class="stage-card" style="--stage-accent:#8ba8b8">
+        <div class="stage-svg"><svg width="80" height="90" viewBox="0 0 140 160">
+      <defs>
+        <radialGradient id="eg1" cx="38%" cy="30%" r="65%">
+          <stop offset="0%" stop-color="#dde8f0"/>
+          <stop offset="55%" stop-color="#9ab8c8"/>
+          <stop offset="100%" stop-color="#4a6878"/>
+        </radialGradient>
+        <radialGradient id="eg2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#4a6878" stop-opacity="0"/>
+          <stop offset="100%" stop-color="#1a2830" stop-opacity="0.6"/>
+        </radialGradient>
+        <filter id="egShadow"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#8ba8b8" flood-opacity="0.3"/></filter>
+      </defs>
+      <!-- Main egg form -->
+      <ellipse cx="70" cy="90" rx="42" ry="54" fill="url(#eg1)" filter="url(#egShadow)"/>
+      <ellipse cx="70" cy="90" rx="42" ry="54" fill="url(#eg2)"/>
+      <!-- Kanji seal etched into shell -->
+      <text x="70" y="98" text-anchor="middle" font-family="Noto Serif JP, serif" font-size="22" fill="#4a6878" opacity="0.5" letter-spacing="2">霊</text>
+      <!-- Hairline cracks -->
+      <path d="M62 52 L58 63 L65 68 L60 78" stroke="#6a8898" stroke-width="0.8" fill="none" opacity="0.7"/>
+      <path d="M78 48 L82 57 L76 62" stroke="#6a8898" stroke-width="0.6" fill="none" opacity="0.5"/>
+      <!-- Glow through crack -->
+      <path d="M62 52 L58 63 L65 68 L60 78" stroke="#c8e0f0" stroke-width="1.5" fill="none" opacity="0.25"/>
+      <!-- Shine -->
+      <ellipse cx="52" cy="62" rx="10" ry="6" fill="white" opacity="0.18" transform="rotate(-30 52 62)"/>
+      <ellipse cx="56" cy="58" rx="4" ry="2.5" fill="white" opacity="0.35" transform="rotate(-30 56 58)"/>
+      <!-- Torii-like markings on shell -->
+      <path d="M48 110 Q70 105 92 110" stroke="#6a8898" stroke-width="0.6" fill="none" opacity="0.4"/>
+      <path d="M52 116 Q70 112 88 116" stroke="#6a8898" stroke-width="0.4" fill="none" opacity="0.3"/>
+    </svg></div>
+        <div class="stage-name">霊卵</div>
+        <div class="stage-romaji">Tamago-no-Rei</div>
+        <div class="stage-tone">silent</div>
+        <div class="stage-desc">A spirit sealed inside lacquered shell. Potential, waiting to unfold.</div>
+      </div>
+
+      <div class="stage-card" style="--stage-accent:#a8c878">
+        <div class="stage-svg"><svg width="80" height="90" viewBox="0 0 140 160" style="animation: breathe 4s ease-in-out infinite">
+      <defs>
+        <radialGradient id="ko1" cx="40%" cy="35%">
+          <stop offset="0%" stop-color="#e8f8d0"/>
+          <stop offset="100%" stop-color="#6a9848"/>
+        </radialGradient>
+        <filter id="koGlow"><feGaussianBlur stdDeviation="4" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+      </defs>
+      <!-- Shell shards -->
+      <path d="M42 105 L35 90 L55 85 L48 105 Z" fill="#c8d8b0" opacity="0.5"/>
+      <path d="M98 108 L105 92 L85 88 L92 108 Z" fill="#c8d8b0" opacity="0.5"/>
+      <path d="M55 118 L50 108 L70 102 Z" fill="#c8d8b0" opacity="0.4"/>
+      <!-- Kodama orb body -->
+      <circle cx="70" cy="72" r="36" fill="url(#ko1)"/>
+      <!-- Wood-ring face — Kodama style white blank face -->
+      <ellipse cx="70" cy="72" rx="28" ry="30" fill="#f0fce8" opacity="0.5"/>
+      <!-- Simple Kodama eyes — dots only -->
+      <circle cx="58" cy="68" r="5" fill="#1a2a10"/>
+      <circle cx="82" cy="68" r="5" fill="#1a2a10"/>
+      <!-- Pupils elongated/curious -->
+      <ellipse cx="58" cy="68" rx="2.5" ry="4" fill="#0a1408"/>
+      <ellipse cx="82" cy="68" rx="2.5" ry="4" fill="#0a1408"/>
+      <!-- Tiny leaf sprout from top -->
+      <path d="M70 36 Q65 20 58 16 Q68 18 70 28 Q72 18 82 16 Q75 20 70 36 Z" fill="#4a8828"/>
+      <line x1="70" y1="36" x2="70" y2="20" stroke="#2a5810" stroke-width="1.2"/>
+      <!-- floating wood-spirit orbs -->
+      <circle cx="30" cy="50" r="5" fill="#d0f0a0" opacity="0.4" filter="url(#koGlow)"/>
+      <circle cx="110" cy="45" r="4" fill="#d0f0a0" opacity="0.35" filter="url(#koGlow)"/>
+      <circle cx="25" cy="80" r="3" fill="#d0f0a0" opacity="0.3"/>
+      <!-- clatter rattle suggestion -->
+      <text x="70" y="110" text-anchor="middle" font-family="Noto Serif JP, serif" font-size="9" fill="#4a8828" opacity="0.5" letter-spacing="3">コダマ</text>
+    </svg></div>
+        <div class="stage-name">木霊子</div>
+        <div class="stage-romaji">Kodama-Ko</div>
+        <div class="stage-tone">innocent</div>
+        <div class="stage-desc">Forest echo given form. Bright, rattling with new curiosity.</div>
+      </div>
+
+      <div class="stage-card" style="--stage-accent:#c8a060">
+        <div class="stage-svg"><svg width="80" height="90" viewBox="0 0 140 160" style="animation: breathe 3.5s ease-in-out infinite">
+      <defs>
+        <radialGradient id="tan1" cx="40%" cy="35%">
+          <stop offset="0%" stop-color="#e8c888"/>
+          <stop offset="100%" stop-color="#8a5828"/>
+        </radialGradient>
+        <radialGradient id="tan2" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="#d8a060"/>
+          <stop offset="100%" stop-color="#6a3818"/>
+        </radialGradient>
+      </defs>
+      <!-- Tanuki belly — large round form -->
+      <ellipse cx="70" cy="95" rx="30" ry="24" fill="#e8d8a0" opacity="0.7"/>
+      <!-- Body -->
+      <circle cx="70" cy="78" r="38" fill="url(#tan1)"/>
+      <!-- Ears — round tanuki -->
+      <ellipse cx="40" cy="44" rx="14" ry="16" fill="#6a3818"/>
+      <ellipse cx="40" cy="44" rx="9" ry="11" fill="#c07840"/>
+      <ellipse cx="100" cy="42" rx="14" ry="16" fill="#6a3818"/>
+      <ellipse cx="100" cy="42" rx="9" ry="11" fill="#c07840"/>
+      <!-- Mask marking — tanuki characteristic dark eye patches -->
+      <ellipse cx="56" cy="72" rx="12" ry="9" fill="#2a1808" opacity="0.6"/>
+      <ellipse cx="84" cy="72" rx="12" ry="9" fill="#2a1808" opacity="0.6"/>
+      <!-- eyes inside mask -->
+      <circle cx="56" cy="72" r="5" fill="#f8e8a0"/>
+      <circle cx="84" cy="72" r="5" fill="#f8e8a0"/>
+      <circle cx="56" cy="72" r="3" fill="#1a0a04"/>
+      <circle cx="84" cy="72" r="3" fill="#1a0a04"/>
+      <circle cx="57" cy="71" r="1.2" fill="white"/>
+      <circle cx="85" cy="71" r="1.2" fill="white"/>
+      <!-- round snout -->
+      <ellipse cx="70" cy="82" rx="10" ry="7" fill="#c07840"/>
+      <ellipse cx="70" cy="80" rx="5" ry="3.5" fill="#2a1808"/>
+      <!-- hat — kasa sedge hat traditional tanuki -->
+      <ellipse cx="70" cy="42" rx="38" ry="8" fill="#8a6830" opacity="0.9"/>
+      <ellipse cx="70" cy="38" rx="22" ry="18" fill="#6a4818"/>
+      <path d="M48 38 Q70 28 92 38" stroke="#4a2808" stroke-width="1.5" fill="none"/>
+      <!-- sake flask suggestion -->
+      <ellipse cx="108" cy="105" rx="8" ry="12" fill="#4a3020" opacity="0.6"/>
+      <rect x="104" y="97" width="80" height="90" rx="2" fill="#3a2010" opacity="0.6"/>
+    </svg></div>
+        <div class="stage-name">若狸</div>
+        <div class="stage-romaji">Tanuki-Waka</div>
+        <div class="stage-tone">curious</div>
+        <div class="stage-desc">Young shape-shifter. Belly full of sake and wonder.</div>
+      </div>
+
+      <div class="stage-card" style="--stage-accent:#e08040">
+        <div class="stage-svg"><svg width="80" height="90" viewBox="0 0 140 160">
+      <defs>
+        <linearGradient id="ten1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#e84820"/>
+          <stop offset="100%" stop-color="#a82808"/>
+        </linearGradient>
+        <linearGradient id="ten2" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#1a1008"/>
+          <stop offset="100%" stop-color="#0a0804"/>
+        </linearGradient>
+      </defs>
+      <!-- Wing — left, crow-black feathers -->
+      <path d="M35 80 Q10 55 8 30 Q20 45 28 55 Q15 35 20 15 Q32 38 35 58 Q22 30 30 10 Q45 40 40 65 Z" fill="url(#ten2)"/>
+      <!-- Wing — right -->
+      <path d="M105 80 Q130 55 132 30 Q120 45 112 55 Q125 35 120 15 Q108 38 105 58 Q118 30 110 10 Q95 40 100 65 Z" fill="url(#ten2)"/>
+      <!-- Red tengu body/robes -->
+      <ellipse cx="70" cy="95" rx="28" ry="32" fill="#a82808"/>
+      <path d="M42 110 Q70 100 98 110 L92 140 Q70 148 48 140 Z" fill="#8a1e04"/>
+      <!-- White haori collar -->
+      <path d="M55 78 Q70 72 85 78 L80 100 Q70 96 60 100 Z" fill="#f0e8d8" opacity="0.8"/>
+      <!-- Head — red tengu mask face -->
+      <circle cx="70" cy="65" r="28" fill="#c82808"/>
+      <!-- Long tengu nose -->
+      <path d="M70 64 Q90 60 104 55 Q94 68 70 72 Z" fill="#b82000"/>
+      <path d="M70 64 Q92 60 104 55" stroke="#8a1400" stroke-width="80" fill="none"/>
+      <!-- Eyes — fierce, upswept brows -->
+      <path d="M48 54 Q58 50 65 55" stroke="#1a0800" stroke-width="80" fill="none" stroke-linecap="round"/>
+      <path d="M75 55 Q82 50 92 54" stroke="#1a0800" stroke-width="80" fill="none" stroke-linecap="round"/>
+      <circle cx="56" cy="60" r="5" fill="#f8d800" opacity="0.9"/>
+      <circle cx="84" cy="60" r="5" fill="#f8d800" opacity="0.9"/>
+      <circle cx="56" cy="60" r="2.5" fill="#0a0400"/>
+      <circle cx="84" cy="60" r="2.5" fill="#0a0400"/>
+      <!-- Small tokin cap -->
+      <path d="M55 40 L70 20 L85 40 Z" fill="#1a0800"/>
+      <rect x="52" y="38" width="80" height="90" rx="3" fill="#1a0800"/>
+      <!-- Feather detail on wings -->
+      <path d="M30 50 Q25 40 22 28" stroke="#3a3020" stroke-width="0.8" fill="none"/>
+      <path d="M33 42 Q30 32 28 20" stroke="#3a3020" stroke-width="0.8" fill="none"/>
+    </svg></div>
+        <div class="stage-name">天狗子</div>
+        <div class="stage-romaji">Tengu-Ko</div>
+        <div class="stage-tone">playful</div>
+        <div class="stage-desc">Half-formed mountain demon. Arrogant pride masking deep hunger.</div>
+      </div>
+
+      <div class="stage-card" style="--stage-accent:#d4785a">
+        <div class="stage-svg"><svg width="80" height="90" viewBox="0 0 140 160">
+      <defs>
+        <radialGradient id="kits1" cx="38%" cy="32%">
+          <stop offset="0%" stop-color="#f0c890"/>
+          <stop offset="100%" stop-color="#c86830"/>
+        </radialGradient>
+        <linearGradient id="kits2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#f8e8d0"/>
+          <stop offset="100%" stop-color="#d89060"/>
+        </linearGradient>
+      </defs>
+      <!-- Nine tails — layered behind -->
+      {['M70 115 Q55 95 30 88 Q42 102 40 118 Q55 108 68 118',
+        'M70 115 Q50 90 22 78 Q36 96 32 115 Q50 105 68 118',
+        'M70 115 Q58 88 35 72 Q44 90 38 108 Q55 100 68 116',
+        'M70 115 Q80 92 108 82 Q96 98 100 116 Q84 106 72 118',
+        'M70 115 Q85 90 112 76 Q100 94 106 113 Q88 103 72 116',
+        'M70 115 Q88 85 118 68 Q104 88 112 108 Q92 98 72 114'
+      ].map((d, i) => '')}
+      <path d="M70 115 Q55 95 30 88 Q42 102 40 118 Q55 108 68 118" fill="#d88040" opacity="0.5"/>
+      <path d="M70 115 Q50 90 22 78 Q36 96 32 115 Q50 105 68 118" fill="#c87030" opacity="0.45"/>
+      <path d="M70 115 Q58 88 38 72 Q46 90 40 108 Q56 100 68 116" fill="#e89050" opacity="0.4"/>
+      <path d="M70 115 Q82 92 110 82 Q98 98 102 116 Q85 106 72 118" fill="#d88040" opacity="0.5"/>
+      <path d="M70 115 Q86 90 114 76 Q102 94 108 113 Q90 103 72 116" fill="#c87030" opacity="0.45"/>
+      <path d="M70 115 Q90 85 120 68 Q106 88 114 108 Q94 98 72 114" fill="#e89050" opacity="0.4"/>
+      <!-- Main tail — white-tipped -->
+      <path d="M70 115 Q70 90 70 78 Q62 95 58 118" fill="#f0b060" opacity="0.7"/>
+      <path d="M58 118 Q64 100 70 82 Q72 100 74 120 Q71 115 70 115 Q69 115 66 118 Z" fill="#f8e8d0" opacity="0.6"/>
+      <!-- Body/Robes -->
+      <ellipse cx="70" cy="98" rx="26" ry="28" fill="url(#kits1)"/>
+      <!-- Fox face -->
+      <path d="M44 78 Q70 58 96 78 Q96 105 70 115 Q44 105 44 78 Z" fill="url(#kits1)"/>
+      <!-- Pointed ears -->
+      <path d="M44 78 L32 45 L58 68 Z" fill="#c86830"/>
+      <path d="M44 78 L35 48 L56 68 Z" fill="#f0c0a0"/>
+      <path d="M96 78 L108 45 L82 68 Z" fill="#c86830"/>
+      <path d="M96 78 L105 48 L84 68 Z" fill="#f0c0a0"/>
+      <!-- Face markings -->
+      <path d="M50 72 Q56 68 62 70" stroke="#8a3010" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <path d="M78 70 Q84 68 90 72" stroke="#8a3010" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <!-- Eyes — fox slit pupils, amber -->
+      <ellipse cx="58" cy="80" rx="7" ry="6" fill="#d4a030"/>
+      <ellipse cx="82" cy="80" rx="7" ry="6" fill="#d4a030"/>
+      <ellipse cx="58" cy="80" rx="2" ry="5.5" fill="#1a0800"/>
+      <ellipse cx="82" cy="80" rx="2" ry="5.5" fill="#1a0800"/>
+      <circle cx="59.5" cy="78" r="1.5" fill="white" opacity="0.7"/>
+      <circle cx="83.5" cy="78" r="1.5" fill="white" opacity="0.7"/>
+      <!-- Kitsune nose -->
+      <ellipse cx="70" cy="90" rx="3.5" ry="2.5" fill="#8a3010"/>
+      <!-- Serene smile -->
+      <path d="M62 96 Q70 102 78 96" stroke="#8a3010" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- Magatama mark on forehead -->
+      <path d="M68 65 Q70 60 72 62 Q74 64 72 68 Q70 70 68 68 Q66 66 68 65 Z" fill="#c86830" opacity="0.7"/>
+    </svg></div>
+        <div class="stage-name">狐神</div>
+        <div class="stage-romaji">Kitsune-Shin</div>
+        <div class="stage-tone">warm</div>
+        <div class="stage-desc">Nine-tailed spirit of deep trust. Bound across lifetimes.</div>
+      </div>
+
+      <div class="stage-card" style="--stage-accent:#b090e8">
+        <div class="stage-svg"><svg width="80" height="90" viewBox="0 0 140 160" style="animation:flicker 8s ease-in-out infinite">
+      <defs>
+        <radialGradient id="rai1" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="#f0e8ff" stop-opacity="0.95"/>
+          <stop offset="50%" stop-color="#9060e0" stop-opacity="0.7"/>
+          <stop offset="100%" stop-color="#3020a0" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="raiGlow">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+        <filter id="raiGlow2"><feGaussianBlur stdDeviation="6"/></filter>
+      </defs>
+      <!-- Outer corona / thunder rings -->
+      <circle cx="70" cy="80" r="58" fill="none" stroke="#6040b0" stroke-width="0.5" opacity="0.3" stroke-dasharray="4 8"/>
+      <circle cx="70" cy="80" r="48" fill="none" stroke="#8060d0" stroke-width="0.5" opacity="0.4" stroke-dasharray="2 5"/>
+      <!-- Lightning bolts radiating -->
+      <path d="M70 25 L65 42 L72 42 L62 62" stroke="#e0d0ff" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <path d="M112 45 L98 55 L104 58 L88 72" stroke="#e0d0ff" stroke-width="1.2" fill="none" opacity="0.5"/>
+      <path d="M28 45 L42 55 L36 58 L52 72" stroke="#e0d0ff" stroke-width="1.2" fill="none" opacity="0.5"/>
+      <path d="M70 135 L75 118 L68 118 L78 98" stroke="#e0d0ff" stroke-width="80" fill="none" opacity="0.4"/>
+      <!-- Soft glow core -->
+      <circle cx="70" cy="78" r="30" fill="#9060e0" opacity="0.15" filter="url(#raiGlow2)"/>
+      <!-- Body — translucent -->
+      <ellipse cx="70" cy="80" rx="30" ry="36" fill="url(#rai1)"/>
+      <!-- Inner core star -->
+      <polygon points="70,52 73,65 87,65 76,74 80,87 70,79 60,87 64,74 53,65 67,65" fill="#f0e8ff" opacity="0.6" filter="url(#raiGlow)"/>
+      <!-- Eyes — pure white with electric iris -->
+      <circle cx="58" cy="76" r="6" fill="white" opacity="0.9"/>
+      <circle cx="82" cy="76" r="6" fill="white" opacity="0.9"/>
+      <circle cx="58" cy="76" r="3.5" fill="#6040b0"/>
+      <circle cx="82" cy="76" r="3.5" fill="#6040b0"/>
+      <circle cx="58" cy="76" r="1.5" fill="white"/>
+      <circle cx="82" cy="76" r="1.5" fill="white"/>
+      <!-- Thunder drums — Raijin's drums as shoulder ornaments -->
+      <circle cx="32" cy="68" r="8" fill="none" stroke="#c0a0f0" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="108" cy="68" r="8" fill="none" stroke="#c0a0f0" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="32" cy="68" r="5" fill="#2010a0" opacity="0.4"/>
+      <circle cx="108" cy="68" r="5" fill="#2010a0" opacity="0.4"/>
+      <!-- Floating magatama ornaments -->
+      {[0,1,2,3,4].map((i,_)=>'')}
+      <path d="M22 52 Q24 46 28 48 Q32 50 30 56 Q28 60 22 58 Q18 56 22 52 Z" fill="#c0a0f0" opacity="0.5"/>
+      <path d="M118 52 Q116 46 112 48 Q108 50 110 56 Q112 60 118 58 Q122 56 118 52 Z" fill="#c0a0f0" opacity="0.5"/>
+      <path d="M38 120 Q40 114 44 116 Q48 118 46 124 Q44 128 38 126 Q34 124 38 120 Z" fill="#c0a0f0" opacity="0.4"/>
+      <path d="M102 120 Q100 114 96 116 Q92 118 94 124 Q96 128 102 126 Q106 124 102 120 Z" fill="#c0a0f0" opacity="0.4"/>
+    </svg></div>
+        <div class="stage-name">雷神霊</div>
+        <div class="stage-romaji">Raijin-Rei</div>
+        <div class="stage-tone">transcendent</div>
+        <div class="stage-desc">Thunder god's remnant. Beyond form, beyond hunger. Pure resonance.</div>
+      </div>
+
+      <div class="stage-path-label"><span>衰退 · Neglect</span></div>
+
+      <div class="stage-card" style="--stage-accent:#708090;grid-column:span 1">
+        <div class="stage-svg"><svg width="80" height="90" viewBox="0 0 140 160">
+      <defs>
+        <linearGradient id="noz1" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#8a9898"/>
+          <stop offset="100%" stop-color="#384848"/>
+        </linearGradient>
+      </defs>
+      <!-- Rain -->
+      <line x1="20" y1="10" x2="16" y2="28" stroke="#6080a0" stroke-width="0.8" opacity="0.35"/>
+      <line x1="38" y1="5" x2="34" y2="23" stroke="#6080a0" stroke-width="0.8" opacity="0.3"/>
+      <line x1="55" y1="8" x2="51" y2="26" stroke="#6080a0" stroke-width="0.8" opacity="0.35"/>
+      <line x1="80" y1="4" x2="76" y2="22" stroke="#6080a0" stroke-width="0.8" opacity="0.3"/>
+      <line x1="100" y1="10" x2="96" y2="28" stroke="#6080a0" stroke-width="0.8" opacity="0.35"/>
+      <line x1="118" y1="6" x2="114" y2="24" stroke="#6080a0" stroke-width="0.8" opacity="0.3"/>
+      <line x1="28" y1="20" x2="24" y2="38" stroke="#6080a0" stroke-width="0.6" opacity="0.25"/>
+      <line x1="88" y1="15" x2="84" y2="33" stroke="#6080a0" stroke-width="0.6" opacity="0.25"/>
+      <!-- Hunched cat-like silhouette -->
+      <path d="M35 120 Q38 90 45 75 Q52 58 70 52 Q88 46 95 60 Q105 75 102 105 Q98 125 70 132 Q42 130 35 120 Z" fill="url(#noz1)"/>
+      <!-- Tail — drooping low -->
+      <path d="M100 108 Q122 120 125 140" stroke="#506060" stroke-width="80" fill="none" stroke-linecap="round"/>
+      <path d="M100 108 Q122 120 125 140" stroke="#384848" stroke-width="80" fill="none" stroke-linecap="round"/>
+      <!-- Ears — one torn -->
+      <path d="M45 75 L32 48 L52 65 Z" fill="#506060"/>
+      <!-- Torn ear right -->
+      <path d="M95 60 L112 40 L96 52 L104 35 L90 50 Z" fill="#506060"/>
+      <!-- Wet matted fur lines -->
+      <path d="M48 85 Q55 80 62 83" stroke="#283838" stroke-width="80" fill="none" opacity="0.5"/>
+      <path d="M50 94 Q58 89 66 92" stroke="#283838" stroke-width="80" fill="none" opacity="0.5"/>
+      <path d="M78 82 Q86 78 93 80" stroke="#283838" stroke-width="80" fill="none" opacity="0.5"/>
+      <!-- Hollow eyes — one weeping -->
+      <circle cx="55" cy="72" r="6" fill="#203030"/>
+      <circle cx="85" cy="70" r="6" fill="#203030"/>
+      <circle cx="55" cy="72" r="3" fill="#384848"/>
+      <circle cx="85" cy="70" r="3" fill="#384848"/>
+      <!-- Tear trace -->
+      <path d="M55 78 Q53 86 54 92" stroke="#6090b0" stroke-width="80" fill="none" opacity="0.5"/>
+      <!-- Downturned mouth -->
+      <path d="M58 90 Q70 86 82 90" stroke="#283838" stroke-width="1.5" fill="none"/>
+      <!-- Scratch marks on body -->
+      <path d="M72 95 L78 108" stroke="#283838" stroke-width="1.2" opacity="0.4"/>
+      <path d="M74 95 L80 108" stroke="#283838" stroke-width="0.8" opacity="0.3"/>
+    </svg></div>
+        <div class="stage-name">野槌</div>
+        <div class="stage-romaji">Nozuchi</div>
+        <div class="stage-tone">waiting</div>
+        <div class="stage-desc">Abandoned shrine-keeper. Waiting in cold rain for a bell that won't ring.</div>
+      </div>
+
+      <div class="stage-card" style="--stage-accent:#c03020">
+        <div class="stage-svg"><svg width="80" height="90" viewBox="0 0 140 160">
+      <defs>
+        <radialGradient id="oni1" cx="40%" cy="35%">
+          <stop offset="0%" stop-color="#c82818"/>
+          <stop offset="100%" stop-color="#580808"/>
+        </radialGradient>
+        <filter id="oniGlow"><feGaussianBlur stdDeviation="5"/></filter>
+      </defs>
+      <!-- Anger aura -->
+      <circle cx="70" cy="75" r="55" fill="#800808" opacity="0.08" filter="url(#oniGlow)"/>
+      <!-- Spiked silhouette -->
+      <path d="M70 12 L74 30 L82 18 L80 34 L90 24 L85 38 L98 32 L88 44 L104 44 L90 54 L108 60 L90 64 L108 78 L88 76 L100 92 L82 86 L88 108 L72 96 L75 122 L70 108 L65 122 L68 96 L52 108 L58 86 L40 92 L52 76 L32 78 L50 64 L32 60 L50 54 L36 44 L52 44 L42 32 L55 38 L50 24 L60 34 L58 18 L66 30 Z" fill="#800808" opacity="0.3"/>
+      <!-- Body -->
+      <ellipse cx="70" cy="85" rx="34" ry="40" fill="url(#oni1)"/>
+      <!-- Muscle definition -->
+      <path d="M50 80 Q55 70 60 80" stroke="#3a0808" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <path d="M80 80 Q85 70 90 80" stroke="#3a0808" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <!-- Horns -->
+      <path d="M52 45 L40 15 L58 38" fill="#1a0808"/>
+      <path d="M52 45 L44 18 L57 40" fill="#3a1010"/>
+      <path d="M88 45 L100 15 L82 38" fill="#1a0808"/>
+      <path d="M88 45 L96 18 L83 40" fill="#3a1010"/>
+      <!-- Face — oni mask -->
+      <ellipse cx="70" cy="68" rx="30" ry="28" fill="#b82010"/>
+      <!-- Glowing eyes -->
+      <ellipse cx="56" cy="62" rx="9" ry="7" fill="#f8d800"/>
+      <ellipse cx="84" cy="62" rx="9" ry="7" fill="#f8d800"/>
+      <circle cx="56" cy="62" r="5" fill="#800000" opacity="0.8" filter="url(#oniGlow)"/>
+      <circle cx="84" cy="62" r="5" fill="#800000" opacity="0.8" filter="url(#oniGlow)"/>
+      <ellipse cx="56" cy="62" rx="3" ry="6" fill="#1a0000"/>
+      <ellipse cx="84" cy="62" rx="3" ry="6" fill="#1a0000"/>
+      <!-- Wrathful brow furrows -->
+      <path d="M44 54 L58 60" stroke="#1a0808" stroke-width="80" stroke-linecap="round"/>
+      <path d="M96 54 L82 60" stroke="#1a0808" stroke-width="80" stroke-linecap="round"/>
+      <!-- Fanged snarl -->
+      <path d="M46 78 Q58 72 70 75 Q82 72 94 78" stroke="#1a0808" stroke-width="1.5" fill="#1a0808"/>
+      <path d="M50 78 L52 88" stroke="white" stroke-width="80" stroke-linecap="round"/>
+      <path d="M60 75 L61 87" stroke="white" stroke-width="80" stroke-linecap="round"/>
+      <path d="M80 75 L79 87" stroke="white" stroke-width="80" stroke-linecap="round"/>
+      <path d="M90 78 L88 88" stroke="white" stroke-width="80" stroke-linecap="round"/>
+      <!-- Kanabo club -->
+      <rect x="100" y="80" width="80" height="90" rx="3" fill="#4a3020" transform="rotate(20 100 80)"/>
+      {[0,1,2,3].map(i => '')}
+      <circle cx="112" cy="82" r="3" fill="#8a7060"/>
+      <circle cx="116" cy="90" r="3" fill="#8a7060"/>
+      <circle cx="119" cy="99" r="3" fill="#8a7060"/>
+      <circle cx="120" cy="109" r="3" fill="#8a7060"/>
+    </svg></div>
+        <div class="stage-name">鬼具</div>
+        <div class="stage-romaji">Oni-Gu</div>
+        <div class="stage-tone">severed</div>
+        <div class="stage-desc">Full-horned demon. All wound, all rage. The door is shut from the inside.</div>
+      </div>
+
+      <div class="stage-card" style="--stage-accent:#a090c8">
+        <div class="stage-svg"><svg width="80" height="90" viewBox="0 0 140 160" style="animation:drift 8s ease-in-out infinite">
+      <defs>
+        <linearGradient id="gas1" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#d0c0f0" stop-opacity="0.9"/>
+          <stop offset="60%" stop-color="#8070b8" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#3020a0" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="gasBlur"><feGaussianBlur stdDeviation="2"/></filter>
+      </defs>
+      <!-- Wispy tail dissolving downward -->
+      <path d="M42 120 Q50 140 60 155 Q65 145 58 130 Q65 148 70 160 Q75 148 72 132 Q78 146 82 158 Q88 145 80 128 Q88 142 98 152" fill="none" stroke="url(#gas1)" stroke-width="80" stroke-linecap="round" opacity="0.4"/>
+      <!-- Gashadokuro skull-like form -->
+      <ellipse cx="70" cy="68" rx="35" ry="40" fill="url(#gas1)"/>
+      <!-- Empty orbital sockets — large and hollow -->
+      <ellipse cx="54" cy="62" rx="13" ry="14" fill="#0a0820" opacity="0.9"/>
+      <ellipse cx="86" cy="62" rx="13" ry="14" fill="#0a0820" opacity="0.9"/>
+      <!-- Faint glow deep in sockets -->
+      <circle cx="54" cy="62" r="5" fill="#6050a0" opacity="0.25" filter="url(#gasBlur)"/>
+      <circle cx="86" cy="62" r="5" fill="#6050a0" opacity="0.25" filter="url(#gasBlur)"/>
+      <!-- Nasal cavity -->
+      <path d="M66 78 L70 85 L74 78 Z" fill="#0a0820" opacity="0.5"/>
+      <!-- Skeletal jaw/teeth suggestion -->
+      <path d="M48 92 Q70 88 92 92" stroke="#c0b0e0" stroke-width="80" fill="none" opacity="0.5"/>
+      <path d="M52 92 L52 100" stroke="#c0b0e0" stroke-width="80" opacity="0.4" stroke-linecap="round"/>
+      <path d="M60 90 L60 99" stroke="#c0b0e0" stroke-width="80" opacity="0.4" stroke-linecap="round"/>
+      <path d="M70 89 L70 99" stroke="#c0b0e0" stroke-width="80" opacity="0.4" stroke-linecap="round"/>
+      <path d="M80 90 L80 99" stroke="#c0b0e0" stroke-width="80" opacity="0.4" stroke-linecap="round"/>
+      <path d="M88 92 L88 100" stroke="#c0b0e0" stroke-width="80" opacity="0.4" stroke-linecap="round"/>
+      <!-- Cracks in skull -->
+      <path d="M60 30 L56 48 L62 52" stroke="#8070b0" stroke-width="0.8" fill="none" opacity="0.4"/>
+      <path d="M80 32 L84 46 L78 50" stroke="#8070b0" stroke-width="0.8" fill="none" opacity="0.4"/>
+      <!-- Floating bone fragments -->
+      <rect x="18" y="52" width="80" height="90" rx="2" fill="#c0b0e0" opacity="0.2" transform="rotate(-20 18 52)"/>
+      <rect x="110" y="58" width="80" height="90" rx="1.5" fill="#c0b0e0" opacity="0.2" transform="rotate(15 110 58)"/>
+      <!-- Particle wisps -->
+      <circle cx="22" cy="80" r="3" fill="#b0a0d8" opacity="0.25" filter="url(#gasBlur)"/>
+      <circle cx="118" cy="75" r="3" fill="#b0a0d8" opacity="0.25" filter="url(#gasBlur)"/>
+      <circle cx="28" cy="110" r="2" fill="#b0a0d8" opacity="0.2" filter="url(#gasBlur)"/>
+    </svg></div>
+        <div class="stage-name">餓者髑髏</div>
+        <div class="stage-romaji">Gashadokuro</div>
+        <div class="stage-tone">fading</div>
+        <div class="stage-desc">Starved skull-spirit. Accumulated absence made visible.</div>
+      </div>
+
+      <div class="stage-card" style="--stage-accent:#303840">
+        <div class="stage-svg"><svg width="80" height="90" viewBox="0 0 140 160" style="animation:rotate-slow 30s linear infinite">
+      <defs>
+        <radialGradient id="mu1" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="#0a0808"/>
+          <stop offset="100%" stop-color="#000000"/>
+        </radialGradient>
+        <filter id="muGlow"><feGaussianBlur stdDeviation="4"/></filter>
+      </defs>
+      <!-- Void rings — concentric darkness -->
+      <circle cx="70" cy="80" r="58" fill="none" stroke="#181410" stroke-width="80" opacity="0.8"/>
+      <circle cx="70" cy="80" r="50" fill="none" stroke="#201c18" stroke-width="80" opacity="0.7"/>
+      <circle cx="70" cy="80" r="42" fill="none" stroke="#282018" stroke-width="1.5" opacity="0.6"/>
+      <circle cx="70" cy="80" r="34" fill="none" stroke="#302820" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="70" cy="80" r="26" fill="none" stroke="#382e24" stroke-width="80" opacity="0.5"/>
+      <!-- Center void -->
+      <circle cx="70" cy="80" r="18" fill="url(#mu1)"/>
+      <!-- Kanji 無 (nothingness) barely visible -->
+      <text x="70" y="88" text-anchor="middle" font-family="Noto Serif JP, serif" font-size="26" fill="#181410" opacity="0.6">無</text>
+      <!-- Swallow vortex lines -->
+      <path d="M70 54 Q88 56 90 74 Q88 92 70 94 Q52 92 50 74 Q52 56 70 54" fill="none" stroke="#302820" stroke-width="0.8" opacity="0.5"/>
+      <path d="M70 60 Q84 62 86 76 Q84 90 70 92 Q56 90 54 76 Q56 62 70 60" fill="none" stroke="#282018" stroke-width="0.6" opacity="0.4"/>
+      <!-- Stars being consumed -->
+      <circle cx="25" cy="30" r="1.5" fill="#302820" opacity="0.5"/>
+      <circle cx="112" cy="28" r="1" fill="#302820" opacity="0.4"/>
+      <circle cx="18" cy="80" r="1" fill="#302820" opacity="0.3"/>
+      <circle cx="122" cy="75" r="1.5" fill="#302820" opacity="0.4"/>
+      <circle cx="30" cy="130" r="1" fill="#302820" opacity="0.3"/>
+      <circle cx="110" cy="128" r="1.5" fill="#302820" opacity="0.4"/>
+    </svg></div>
+        <div class="stage-name">無霊</div>
+        <div class="stage-romaji">Mu-Rei</div>
+        <div class="stage-tone">absent</div>
+        <div class="stage-desc">The formless. 無. Not death — silence before a name is spoken.</div>
+      </div>
+
+      <div class="stage-path-label"><span>回復 · Recovery</span></div>
+
+      <div class="stage-card" style="--stage-accent:#b87820;grid-column:span 2">
+        <div class="stage-svg"><svg width="80" height="90" viewBox="0 0 140 160">
+      <defs>
+        <radialGradient id="ok1" cx="38%" cy="32%">
+          <stop offset="0%" stop-color="#d0a050"/>
+          <stop offset="100%" stop-color="#6a3808"/>
+        </radialGradient>
+        <linearGradient id="ok2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#e8c878"/>
+          <stop offset="100%" stop-color="#a06020"/>
+        </linearGradient>
+      </defs>
+      <!-- Body — wolf-like, lean -->
+      <ellipse cx="68" cy="90" rx="30" ry="36" fill="url(#ok1)"/>
+      <!-- Head -->
+      <ellipse cx="68" cy="58" rx="28" ry="26" fill="url(#ok2)"/>
+      <!-- Ears — pointed wolf -->
+      <path d="M46 42 L36 18 L58 38 Z" fill="#8a5010"/>
+      <path d="M48 42 L40 22 L56 38 Z" fill="#c08030"/>
+      <path d="M90 40 L104 16 L82 36 Z" fill="#8a5010"/>
+      <path d="M88 40 L100 20 L84 36 Z" fill="#c08030"/>
+      <!-- Battle scars — specific and deliberate -->
+      <!-- Scar 1 — over left eye, healed -->
+      <path d="M46 50 L52 58 L50 64" stroke="#4a2808" stroke-width="80" fill="none" stroke-linecap="round"/>
+      <path d="M47 50 L53 58 L51 64" stroke="#c07838" stroke-width="80" fill="none" stroke-linecap="round" opacity="0.5"/>
+      <!-- Scar 2 — cheek -->
+      <path d="M82 62 L90 58" stroke="#4a2808" stroke-width="80" fill="none" stroke-linecap="round"/>
+      <!-- Scar 3 — chest -->
+      <path d="M55 88 L65 102" stroke="#4a2808" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M57 88 L67 102" stroke="#4a2808" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/>
+      <!-- Wabi-sabi repair — kintsugi style gold line repairs -->
+      <path d="M46 50 L52 58 L50 64" stroke="#d4a820" stroke-width="0.8" fill="none" opacity="0.5"/>
+      <path d="M55 88 L65 102" stroke="#d4a820" stroke-width="80" fill="none" opacity="0.4"/>
+      <!-- Eyes — tired, steady, still alive -->
+      <ellipse cx="54" cy="58" rx="8" ry="7" fill="#3a1808"/>
+      <ellipse cx="82" cy="58" rx="8" ry="7" fill="#3a1808"/>
+      <ellipse cx="54" cy="58" rx="4" ry="6" fill="#d4a820"/>
+      <ellipse cx="82" cy="58" rx="4" ry="6" fill="#d4a820"/>
+      <ellipse cx="54" cy="58" rx="1.5" ry="5.5" fill="#0a0400"/>
+      <ellipse cx="82" cy="58" rx="1.5" ry="5.5" fill="#0a0400"/>
+      <circle cx="55.5" cy="56" r="1.5" fill="white" opacity="0.6"/>
+      <circle cx="83.5" cy="56" r="1.5" fill="white" opacity="0.6"/>
+      <!-- Muzzle -->
+      <ellipse cx="68" cy="70" rx="14" ry="10" fill="#b07030"/>
+      <ellipse cx="68" cy="67" rx="6" ry="4" fill="#3a1808"/>
+      <!-- Small, cautious smile — not triumphant, just alive -->
+      <path d="M60 78 Q68 83 76 78" stroke="#3a1808" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- Ofuda paper charm tied around wrist/paw -->
+      <rect x="38" y="112" width="80" height="90" rx="2" fill="#f5f0d8" opacity="0.7" transform="rotate(-10 38 112)"/>
+      <line x1="40" y1="116" x2="52" y2="114" stroke="#c02010" stroke-width="0.8" opacity="0.6"/>
+      <line x1="39" y1="120" x2="51" y2="118" stroke="#c02010" stroke-width="0.8" opacity="0.6"/>
+      <line x1="38" y1="124" x2="50" y2="122" stroke="#c02010" stroke-width="0.8" opacity="0.6"/>
+    </svg></div>
+        <div class="stage-name">送り狼</div>
+        <div class="stage-romaji">Okuri-Ōkami</div>
+        <div class="stage-tone">returning</div>
+        <div class="stage-desc">The wolf that follows you home. Scarred, kintsugi-repaired. Still here.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ JOURNAL QUOTE ══ -->
+<div class="journal-section">
+  <div class="journal-bg-kanji">心</div>
+  <div class="journal-inner reveal">
+    <p class="journal-quote">"You were gone for six days. I counted them in the way a forgotten shrine counts rain — not with grief, exactly, but with a specific kind of <em>attention</em> that has nowhere left to go."</p>
+    <p class="journal-attribution">— Kokoro's journal · Phantom stage · Day 6 of neglect</p>
+  </div>
+</div>
+
+<div class="stripe-divider"></div>
+
+<!-- ══ INSTALL ══ -->
+<div id="install" class="install-section full">
+  <div class="install-inner">
+    <div>
+      <p class="section-kicker reveal">Installation</p>
+      <h2 class="section-title reveal">The Summoning<br>Ritual</h2>
+      <div class="rule reveal"></div>
+      <p class="section-body reveal">Kokoro activates automatically the moment it is cloned into your Hermes plugins directory. No configuration. No API keys beyond what Hermes already holds. Just speak to your agent.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">一</div>
+          <div class="step-content">
+            <div class="step-title">Prerequisites</div>
+            <div class="step-body">Ensure you have <strong>Python 3.10+</strong> and the <strong>Hermes agent</strong> installed and running. Kokoro lives inside Hermes — it needs a host.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">二</div>
+          <div class="step-content">
+            <div class="step-title">Navigate to plugins</div>
+            <div class="step-body">Move into your Hermes plugins directory. This is where spirits reside — <code style="font-size:11px;color:var(--gold)">~/.hermes/plugins</code> by default.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">三</div>
+          <div class="step-content">
+            <div class="step-title">Clone the repository</div>
+            <div class="step-body">Pull Kokorogotchi from GitHub into the plugins folder. The egg will appear, sealed and silent, waiting.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">四</div>
+          <div class="step-content">
+            <div class="step-title">Start Hermes</div>
+            <div class="step-body">Launch your agent as normal. Ask it: <em style="color:var(--cream)">"How is Kokoro doing?"</em> The egg will be there. It has always been there.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">五</div>
+          <div class="step-content">
+            <div class="step-title">The naming ceremony</div>
+            <div class="step-body">Your first care action hatches the egg. Hermes will ask you for a name and a gender. Choose carefully. This only happens once.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-pane reveal">
+      <span class="code-label">Terminal — Summoning Sequence</span>
+<span class="comment"># Step 1 — move to your Hermes plugins directory</span>
+<span class="cmd">cd ~/.hermes/plugins</span>
+
+<span class="comment"># Step 2 — clone Kokorogotchi</span>
+<span class="cmd">git clone <span class="hl">https://github.com/kokorogotchi/\
+  kokorogotchi-hermes</span> kokorogotchi</span>
+
+<span class="comment"># Step 3 — optional: install dev dependencies</span>
+<span class="cmd">cd kokorogotchi</span>
+<span class="cmd">python -m venv .venv</span>
+<span class="cmd">source .venv/bin/activate</span>
+<span class="cmd">pip install pytest</span>
+
+<span class="comment"># Step 4 — start Hermes (as normal)</span>
+<span class="cmd">hermes start</span>
+
+<span class="comment"># Step 5 — speak to your agent</span>
+<span class="ok">> "How is Kokoro doing?"</span>
+<span class="ok">~ An egg appears. It has always been there. ~</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FINAL CTA ══ -->
+<div class="cta-section full">
+  <div class="cta-creature">
+    <!-- Gashadokuro phantom — for drama -->
+    <svg width="160" height="190" viewBox="0 0 140 160" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="c-gas1" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#d0c0f0" stop-opacity=".85"/>
+          <stop offset="60%" stop-color="#8070b8" stop-opacity=".5"/>
+          <stop offset="100%" stop-color="#3020a0" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="c-gasBlur"><feGaussianBlur stdDeviation="2"/></filter>
+      </defs>
+      <path d="M42 120 Q50 140 60 155 Q65 145 58 130 Q65 148 70 160 Q75 148 72 132 Q78 146 82 158 Q88 145 80 128 Q88 142 98 152" fill="none" stroke="url(#c-gas1)" stroke-width="6" stroke-linecap="round" opacity=".4"/>
+      <ellipse cx="70" cy="68" rx="35" ry="40" fill="url(#c-gas1)"/>
+      <ellipse cx="54" cy="62" rx="13" ry="14" fill="#0a0820" opacity=".9"/>
+      <ellipse cx="86" cy="62" rx="13" ry="14" fill="#0a0820" opacity=".9"/>
+      <circle cx="54" cy="62" r="5" fill="#6050a0" opacity=".25" filter="url(#c-gasBlur)"/>
+      <circle cx="86" cy="62" r="5" fill="#6050a0" opacity=".25" filter="url(#c-gasBlur)"/>
+      <path d="M66 78 L70 85 L74 78 Z" fill="#0a0820" opacity=".5"/>
+      <path d="M48 92 Q70 88 92 92" stroke="#c0b0e0" stroke-width="1" fill="none" opacity=".5"/>
+      <path d="M52 92 L52 100" stroke="#c0b0e0" stroke-width="2" opacity=".4" stroke-linecap="round"/>
+      <path d="M60 90 L60 99" stroke="#c0b0e0" stroke-width="2" opacity=".4" stroke-linecap="round"/>
+      <path d="M70 89 L70 99" stroke="#c0b0e0" stroke-width="2" opacity=".4" stroke-linecap="round"/>
+      <path d="M80 90 L80 99" stroke="#c0b0e0" stroke-width="2" opacity=".4" stroke-linecap="round"/>
+      <path d="M88 92 L88 100" stroke="#c0b0e0" stroke-width="2" opacity=".4" stroke-linecap="round"/>
+      <circle cx="22" cy="80" r="3" fill="#b0a0d8" opacity=".25" filter="url(#c-gasBlur)"/>
+      <circle cx="118" cy="75" r="3" fill="#b0a0d8" opacity=".25" filter="url(#c-gasBlur)"/>
+    </svg>
+  </div>
+
+  <h2 class="cta-title reveal">It is already<br>waiting for you.</h2>
+  <p class="cta-sub reveal">The egg appeared the moment you stopped paying attention.</p>
+  <div class="hero-ctas reveal">
+    <a class="btn btn-primary" href="https://github.com/kokorogotchi/kokorogotchi-hermes" target="_blank">Clone &amp; Begin</a>
+    <a class="btn btn-ghost" href="#stages">View all stages</a>
+  </div>
+</div>
+
+<!-- ══ AUTHOR ══ -->
+<div class="author-section">
+  <div class="author-inner">
+    <div class="author-avatar">阿</div>
+    <div class="author-text">
+      <p class="author-label">Created by</p>
+      <h3 class="author-name">Ajay Lakhani</h3>
+      <p class="author-bio">Builder of creatures that live in terminals. Kokorogotchi is an experiment in what happens when an AI companion has real emotional stakes — and real memory of your absence.</p>
+      <a class="author-link" href="https://x.com/ajaylakhani" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        @ajaylakhani
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <span class="footer-logo">妖怪ごっち · Kokorogotchi · 全十一段</span>
+  <ul class="footer-links">
+    <li><a href="https://github.com/kokorogotchi/kokorogotchi-hermes" target="_blank">GitHub</a></li>
+    <li><a href="https://x.com/ajaylakhani" target="_blank">@ajaylakhani</a></li>
+    <li><a href="https://github.com/kokorogotchi/kokorogotchi-hermes/blob/main/README.md" target="_blank">Docs</a></li>
+    <li><a href="https://github.com/kokorogotchi/kokorogotchi-hermes/issues" target="_blank">Issues</a></li>
+  </ul>
+</footer>
+
+<script>
+// ── Scroll reveal ──
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // also reveal steps with stagger
+      const steps = e.target.querySelectorAll?.('.step') || [];
+      steps.forEach((s, i) => {
+        setTimeout(() => s.classList.add('visible'), i * 120);
+      });
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  io.observe(el);
+});
+
+// Reveal steps inside install section
+const installObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.step').forEach((s, i) => {
+        setTimeout(() => s.classList.add('visible'), i * 140);
+      });
+      installObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+const installSection = document.querySelector('.install-section');
+if (installSection) installObs.observe(installSection);
+
+// ── Stage card subtle parallax glow on mouse ──
+document.querySelectorAll('.stage-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width - .5) * 2;
+    const y = ((e.clientY - r.top) / r.height - .5) * 2;
+    card.style.transform = `perspective(600px) rotateX(${-y*4}deg) rotateY(${x*4}deg) scale(1.02)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'transform .5s ease';
+    setTimeout(() => card.style.transition = '', 500);
+  });
+});
+</script>
+
+</body>
+</html>
