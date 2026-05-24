@@ -1,0 +1,6 @@
+name: kokorogotchi
+version: "1.1"
+description: >
+  Kokoro — a virtual creature that drifts between bonded and feral based on how
+  you tend to it. Owns its own emotional state, writes its own journal, and
+  processes time alone before you arrive.
