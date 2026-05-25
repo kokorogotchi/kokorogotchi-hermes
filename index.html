@@ -910,8 +910,134 @@ footer {
 .footer-links a:hover{opacity:.8;}
 
 /* ═══════════════════════════════
-   SCROLL REVEAL
+   FIRST-EVER BADGE
 ═══════════════════════════════ */
+.hero-first-badge {
+  display:inline-block;
+  font-family:'Shippori Mincho B1',serif;
+  font-size:9px;letter-spacing:.45em;text-transform:uppercase;
+  color:var(--gold);
+  background:rgba(200,152,14,.08);
+  border:1px solid rgba(200,152,14,.35);
+  padding:7px 20px;
+  position:relative;
+}
+.hero-first-badge::before,
+.hero-first-badge::after {
+  content:'';
+  position:absolute;top:50%;
+  width:30px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,152,14,.4));
+}
+.hero-first-badge::before{right:100%;margin-right:10px;transform:translateY(-50%);}
+.hero-first-badge::after{left:100%;margin-left:10px;background:linear-gradient(90deg,rgba(200,152,14,.4),transparent);transform:translateY(-50%);}
+
+/* ═══════════════════════════════
+   DISCORD BUTTON VARIANTS
+═══════════════════════════════ */
+.btn-discord {
+  background:rgba(88,101,242,.15);
+  border-color:rgba(88,101,242,.45);
+  color:#a8b0f8;
+  display:inline-flex;align-items:center;
+}
+.btn-discord:hover{background:rgba(88,101,242,.28);border-color:rgba(88,101,242,.8);color:#d0d4fc;}
+
+.btn-discord-lg {
+  display:inline-flex;align-items:center;
+  font-family:'Shippori Mincho B1',serif;
+  font-size:10px;letter-spacing:.35em;text-transform:uppercase;
+  text-decoration:none;
+  padding:16px 36px;
+  border:1px solid rgba(88,101,242,.45);
+  background:rgba(88,101,242,.12);
+  color:#a8b0f8;
+  transition:all .35s;
+  position:relative;overflow:hidden;
+}
+.btn-discord-lg:hover{background:rgba(88,101,242,.25);border-color:rgba(88,101,242,.8);color:#d0d4fc;}
+
+/* ═══════════════════════════════
+   DISCORD SECTION
+═══════════════════════════════ */
+.discord-section {
+  position:relative;z-index:1;
+  background:var(--smoke);
+  border-top:1px solid rgba(88,101,242,.12);
+  border-bottom:1px solid rgba(88,101,242,.08);
+}
+.discord-section::before {
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(88,101,242,.25),transparent);
+}
+.discord-inner {
+  max-width:1060px;margin:0 auto;
+  padding:100px 32px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:start;
+}
+.discord-channels {
+  background:var(--ash);
+  border:1px solid #1e1a14;
+  border-left:2px solid rgba(88,101,242,.4);
+  padding:32px;
+  position:sticky;top:120px;
+}
+.discord-channels-label {
+  font-family:'Shippori Mincho B1',serif;
+  font-size:8px;letter-spacing:.5em;text-transform:uppercase;
+  color:var(--mist);
+  padding-bottom:16px;
+  border-bottom:1px solid #1e1a14;
+  margin-bottom:20px;
+  display:block;
+  opacity:.6;
+}
+.discord-channel-list {
+  display:flex;flex-direction:column;gap:3px;
+}
+.dc-category {
+  font-family:'Shippori Mincho B1',serif;
+  font-size:8px;letter-spacing:.45em;text-transform:uppercase;
+  color:rgba(88,101,242,.6);
+  margin-top:4px;margin-bottom:8px;
+}
+.dc-channel {
+  display:flex;align-items:baseline;gap:0;
+  font-family:'IM Fell English',serif;
+  font-size:13px;
+  color:var(--mist);
+  padding:4px 8px;
+  border-radius:3px;
+  transition:background .2s,color .2s;
+  cursor:default;
+}
+.dc-channel:hover{background:rgba(255,255,255,.04);color:var(--cream);}
+.dc-hash {
+  color:rgba(88,101,242,.5);
+  margin-right:4px;
+  flex-shrink:0;
+  font-style:normal;
+}
+.dc-desc {
+  font-size:11px;
+  color:#3a3428;
+  margin-left:auto;
+  padding-left:12px;
+  font-style:italic;
+  white-space:nowrap;
+}
+.dc-channel:hover .dc-desc{color:#5a5040;}
+
+@media(max-width:800px){
+  .discord-inner{grid-template-columns:1fr;}
+  .discord-channels{position:static;}
+}
+
+
 .reveal {
   opacity:0;transform:translateY(28px);
   transition:opacity .8s,transform .8s;
@@ -943,6 +1069,7 @@ footer {
     <li><a href="#what">About</a></li>
     <li><a href="#stages">Stages</a></li>
     <li><a href="#install">Install</a></li>
+    <li><a href="https://discord.gg/PnRkX5f2" target="_blank" style="color:var(--vermilion)!important">Discord</a></li>
     <li><a href="https://github.com/kokorogotchi/kokorogotchi-hermes" target="_blank">GitHub</a></li>
   </ul>
 </nav>
@@ -951,6 +1078,9 @@ footer {
 <div class="hero">
   <div class="hero-bg"></div>
 
+  <div class="hero-badge-wrap" style="position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:20px;animation:fade-up .8s .05s both;">
+    <span class="hero-first-badge">★ The first Tamagotchi-style virtual pet game inside an AI agent ★</span>
+  </div>
   <p class="hero-eyebrow">妖怪 · AI Companion · Hermes Plugin</p>
 
   <!-- Hero creature — animated egg with crack glow -->
@@ -1003,6 +1133,10 @@ footer {
   <div class="hero-ctas">
     <a class="btn btn-primary" href="#install">Begin the Ritual</a>
     <a class="btn btn-ghost" href="https://github.com/kokorogotchi/kokorogotchi-hermes" target="_blank">View on GitHub</a>
+    <a class="btn btn-discord" href="https://discord.gg/PnRkX5f2" target="_blank">
+      <svg width="14" height="11" viewBox="0 0 14 11" fill="currentColor" style="margin-right:7px;flex-shrink:0"><path d="M11.854 1.02A11.34 11.34 0 0 0 9.01 0c-.13.235-.28.551-.383.8A10.46 10.46 0 0 0 7 .668c-.216 0-.434.008-.647.024A8.28 8.28 0 0 0 5.98.8C5.876.55 5.724.235 5.594 0A11.37 11.37 0 0 0 2.749 1.02C.395 4.577-.242 8.044.076 11.464a11.46 11.46 0 0 0 3.51 1.782 8.83 8.83 0 0 0 .753-1.237 7.45 7.45 0 0 1-1.185-.573c.1-.073.197-.15.291-.228a8.18 8.18 0 0 0 7.11 0c.095.08.192.155.292.228a7.48 7.48 0 0 1-1.188.575c.218.434.47.847.754 1.237a11.43 11.43 0 0 0 3.513-1.783c.37-3.898-.631-7.333-2.072-10.445ZM4.677 9.387c-.86 0-1.564-.797-1.564-1.772s.687-1.774 1.564-1.774c.877 0 1.579.797 1.564 1.774 0 .975-.687 1.772-1.564 1.772Zm5.79 0c-.86 0-1.563-.797-1.563-1.772s.687-1.774 1.563-1.774c.877 0 1.574.797 1.564 1.774 0 .975-.687 1.772-1.564 1.772Z"/></svg>
+      Join Discord
+    </a>
   </div>
 
   <div class="hero-scroll-hint">
@@ -1830,6 +1964,45 @@ footer {
   </div>
 </div>
 
+<!-- ══ DISCORD ══ -->
+<div class="discord-section">
+  <div class="discord-inner">
+    <div class="discord-text reveal">
+      <p class="section-kicker">Community</p>
+      <h2 class="section-title">Build it with us.<br><span style="color:var(--vermilion)">Open source.</span></h2>
+      <div class="rule"></div>
+      <p class="section-body">Kokorogotchi is the first game ever built inside an AI agent — and it's entirely open. Come help shape what a living creature inside a terminal can become. Contribute stages, mechanics, lore, or just watch Kokoro evolve.</p>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:36px;">
+        <a class="btn btn-discord-lg" href="https://discord.gg/PnRkX5f2" target="_blank">
+          <svg width="20" height="15" viewBox="0 0 14 11" fill="currentColor" style="margin-right:9px;flex-shrink:0"><path d="M11.854 1.02A11.34 11.34 0 0 0 9.01 0c-.13.235-.28.551-.383.8A10.46 10.46 0 0 0 7 .668c-.216 0-.434.008-.647.024A8.28 8.28 0 0 0 5.98.8C5.876.55 5.724.235 5.594 0A11.37 11.37 0 0 0 2.749 1.02C.395 4.577-.242 8.044.076 11.464a11.46 11.46 0 0 0 3.51 1.782 8.83 8.83 0 0 0 .753-1.237 7.45 7.45 0 0 1-1.185-.573c.1-.073.197-.15.291-.228a8.18 8.18 0 0 0 7.11 0c.095.08.192.155.292.228a7.48 7.48 0 0 1-1.188.575c.218.434.47.847.754 1.237a11.43 11.43 0 0 0 3.513-1.783c.37-3.898-.631-7.333-2.072-10.445ZM4.677 9.387c-.86 0-1.564-.797-1.564-1.772s.687-1.774 1.564-1.774c.877 0 1.579.797 1.564 1.774 0 .975-.687 1.772-1.564 1.772Zm5.79 0c-.86 0-1.563-.797-1.563-1.772s.687-1.774 1.563-1.774c.877 0 1.574.797 1.564 1.774 0 .975-.687 1.772-1.564 1.772Z"/></svg>
+          Join discord.gg/PnRkX5f2
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/kokorogotchi/kokorogotchi-hermes" target="_blank">View on GitHub</a>
+      </div>
+    </div>
+
+    <div class="discord-channels reveal">
+      <p class="discord-channels-label">What's inside</p>
+      <div class="discord-channel-list">
+        <div class="dc-category">✦ Development</div>
+        <div class="dc-channel"><span class="dc-hash">#</span>general-dev<span class="dc-desc">day-to-day coding chat</span></div>
+        <div class="dc-channel"><span class="dc-hash">#</span>architecture<span class="dc-desc">design & Hermes plugin model</span></div>
+        <div class="dc-channel"><span class="dc-hash">#</span>rfcs<span class="dc-desc">design proposals before code</span></div>
+        <div class="dc-channel"><span class="dc-hash">#</span>good-first-issues<span class="dc-desc">curated, updated weekly</span></div>
+
+        <div class="dc-category" style="margin-top:18px;">✦ Game &amp; Lore</div>
+        <div class="dc-channel"><span class="dc-hash">#</span>playtesting<span class="dc-desc">emotional bugs welcome</span></div>
+        <div class="dc-channel"><span class="dc-hash">#</span>lore-canon<span class="dc-desc">Kokoro's voice & personality</span></div>
+        <div class="dc-channel"><span class="dc-hash">#</span>assets<span class="dc-desc">sprites, pixel art proposals</span></div>
+
+        <div class="dc-category" style="margin-top:18px;">✦ Issues & PRs</div>
+        <div class="dc-channel"><span class="dc-hash">#</span>pr-reviews<span class="dc-desc">post your PR when ready</span></div>
+        <div class="dc-channel"><span class="dc-hash">#</span>github-feed<span class="dc-desc">auto-posted from repo</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══ FINAL CTA ══ -->
 <div class="cta-section full">
   <div class="cta-creature">
@@ -1890,6 +2063,7 @@ footer {
   <span class="footer-logo">妖怪ごっち · Kokorogotchi · 全十一段</span>
   <ul class="footer-links">
     <li><a href="https://github.com/kokorogotchi/kokorogotchi-hermes" target="_blank">GitHub</a></li>
+    <li><a href="https://discord.gg/PnRkX5f2" target="_blank">Discord</a></li>
     <li><a href="https://x.com/ajaylakhani" target="_blank">@ajaylakhani</a></li>
     <li><a href="https://github.com/kokorogotchi/kokorogotchi-hermes/blob/main/README.md" target="_blank">Docs</a></li>
     <li><a href="https://github.com/kokorogotchi/kokorogotchi-hermes/issues" target="_blank">Issues</a></li>
