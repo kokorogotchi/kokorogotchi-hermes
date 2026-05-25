@@ -54,13 +54,53 @@ export default function App() {
   // Loading state
   if (!state) {
     return (
-      <div className="app-shell" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="app-shell" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <ScanlineOverlay />
-        <div style={{ textAlign: 'center', padding: 24 }}>
-          <div style={{ fontSize: 48, animation: 'floatBob 2s ease-in-out infinite' }}>🥚</div>
-          <p className="mono" style={{ fontSize: 9, color: 'var(--muted)', marginTop: 16, letterSpacing: '0.35em' }}>
-            connecting...
-          </p>
+        <div className="fade-in" style={{ textAlign: 'center', padding: 24 }}>
+          {/* Egg sprite with breathing animation */}
+          <div style={{
+            width: 100, height: 120, margin: '0 auto 28px',
+            animation: 'floatBob 4s ease-in-out infinite',
+            filter: 'drop-shadow(0 0 30px rgba(154,184,200,.2))',
+          }} dangerouslySetInnerHTML={{ __html: `<svg width="100" height="120" viewBox="0 0 140 160">
+            <defs>
+              <radialGradient id="ceg1" cx="38%" cy="30%" r="65%">
+                <stop offset="0%" stop-color="#dde8f0"/>
+                <stop offset="55%" stop-color="#9ab8c8"/>
+                <stop offset="100%" stop-color="#4a6878"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="70" cy="90" rx="42" ry="54" fill="url(#ceg1)"/>
+            <text x="70" y="98" text-anchor="middle" font-family="Noto Serif JP, serif" font-size="22" fill="#4a6878" opacity="0.5" letter-spacing="2">霊</text>
+            <ellipse cx="52" cy="62" rx="10" ry="6" fill="white" opacity="0.18" transform="rotate(-30 52 62)"/>
+          </svg>` }} />
+
+          {/* Title */}
+          <div style={{
+            fontFamily: 'var(--font-serif)', fontWeight: 900,
+            fontSize: 22, letterSpacing: '0.15em', color: 'var(--text)',
+            marginBottom: 6,
+          }}>
+            <span style={{ color: 'var(--vermilion)' }}>妖怪</span>ごっち
+          </div>
+
+          {/* Subtitle */}
+          <div style={{
+            fontFamily: 'var(--font-body)', fontStyle: 'italic',
+            fontSize: 12, color: 'var(--muted)', letterSpacing: '0.06em',
+            marginBottom: 24,
+          }}>
+            Kokorogotchi
+          </div>
+
+          {/* Status */}
+          <div className="mono" style={{
+            fontSize: 9, color: 'var(--muted)', letterSpacing: '0.4em',
+            textTransform: 'uppercase',
+          }}>
+            <span style={{ display: 'inline-block', animation: 'pulse 2s ease-in-out infinite' }}>●</span>
+            {' '}summoning spirit...
+          </div>
         </div>
       </div>
     )
@@ -69,13 +109,40 @@ export default function App() {
   // No-state screen (state.json doesn't exist)
   if (state.error === 'no_state') {
     return (
-      <div className="app-shell" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="app-shell" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <ScanlineOverlay />
-        <div style={{ textAlign: 'center', padding: 24 }}>
-          <div style={{ fontSize: 64, marginBottom: 24, filter: 'drop-shadow(0 0 20px rgba(194,48,32,.2))' }}>🥚</div>
-          <p style={{ fontSize: 14, color: 'var(--cream)', fontStyle: 'italic', lineHeight: 1.9, maxWidth: 260, fontFamily: 'var(--font-body)' }}>
+        <div className="fade-in" style={{ textAlign: 'center', padding: 24, maxWidth: 320 }}>
+          {/* Egg sprite */}
+          <div style={{
+            width: 100, height: 120, margin: '0 auto 28px',
+            opacity: 0.6,
+            filter: 'drop-shadow(0 0 20px rgba(194,48,32,.15))',
+          }} dangerouslySetInnerHTML={{ __html: `<svg width="100" height="120" viewBox="0 0 140 160">
+            <defs>
+              <radialGradient id="neg1" cx="38%" cy="30%" r="65%">
+                <stop offset="0%" stop-color="#dde8f0"/>
+                <stop offset="55%" stop-color="#9ab8c8"/>
+                <stop offset="100%" stop-color="#4a6878"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="70" cy="90" rx="42" ry="54" fill="url(#neg1)"/>
+            <text x="70" y="98" text-anchor="middle" font-family="Noto Serif JP, serif" font-size="22" fill="#4a6878" opacity="0.5" letter-spacing="2">霊</text>
+          </svg>` }} />
+
+          {/* Message */}
+          <p style={{
+            fontSize: 14, color: 'var(--cream)', fontStyle: 'italic',
+            lineHeight: 1.9, fontFamily: 'var(--font-body)',
+          }}>
             {state.message}
           </p>
+
+          <div className="mono" style={{
+            fontSize: 8, color: 'var(--muted)', marginTop: 20,
+            letterSpacing: '0.4em', textTransform: 'uppercase',
+          }}>
+            speak to hermes to begin
+          </div>
         </div>
       </div>
     )
