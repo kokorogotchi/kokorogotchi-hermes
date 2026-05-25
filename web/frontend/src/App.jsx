@@ -58,7 +58,7 @@ export default function App() {
         <ScanlineOverlay />
         <div style={{ textAlign: 'center', padding: 24 }}>
           <div style={{ fontSize: 48, animation: 'floatBob 2s ease-in-out infinite' }}>🥚</div>
-          <p className="mono" style={{ fontSize: 9, color: 'var(--muted)', marginTop: 16, letterSpacing: '0.1em' }}>
+          <p className="mono" style={{ fontSize: 9, color: 'var(--muted)', marginTop: 16, letterSpacing: '0.35em' }}>
             connecting...
           </p>
         </div>
@@ -72,8 +72,8 @@ export default function App() {
       <div className="app-shell" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <ScanlineOverlay />
         <div style={{ textAlign: 'center', padding: 24 }}>
-          <div style={{ fontSize: 64, marginBottom: 24, filter: 'drop-shadow(0 0 20px #e8d5a333)' }}>🥚</div>
-          <p style={{ fontSize: 13, color: '#ffffff88', fontStyle: 'italic', lineHeight: 1.9, maxWidth: 260 }}>
+          <div style={{ fontSize: 64, marginBottom: 24, filter: 'drop-shadow(0 0 20px rgba(194,48,32,.2))' }}>🥚</div>
+          <p style={{ fontSize: 14, color: 'var(--cream)', fontStyle: 'italic', lineHeight: 1.9, maxWidth: 260, fontFamily: 'var(--font-body)' }}>
             {state.message}
           </p>
         </div>
@@ -103,15 +103,15 @@ export default function App() {
       {/* Drift alert banner */}
       {driftAlert && (
         <div className="fade-in" style={{
-          background: '#e8a3c822', border: '1px solid #e8a3c844',
-          borderRadius: 12, padding: '10px 14px',
+          background: 'rgba(194,48,32,.08)', border: '1px solid rgba(194,48,32,.25)',
+          borderRadius: 4, padding: '10px 14px',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         }}>
-          <span style={{ fontSize: 11, color: '#e8a3c8' }}>
+          <span style={{ fontSize: 11, color: 'var(--vermilion)', fontFamily: 'var(--font-body)', fontStyle: 'italic' }}>
             ⚠ Kokoro needs you
           </span>
           <button onClick={dismissDriftAlert} style={{
-            background: 'none', border: 'none', color: '#ffffff44',
+            background: 'none', border: 'none', color: 'var(--muted)',
             cursor: 'pointer', fontSize: 14, padding: '0 4px',
           }}>×</button>
         </div>
@@ -122,17 +122,20 @@ export default function App() {
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
       }}>
         <div>
-          <div className="label-xs">Kokorogotchi こころごっち</div>
-          <div style={{ fontSize: 22, fontWeight: 300, marginTop: 2, letterSpacing: '0.04em' }}>
+          <div className="label-xs" style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+            <span>妖怪ごっち</span>
+            <span style={{ fontFamily: 'var(--font-body)', fontStyle: 'italic', fontSize: 10, color: 'var(--muted)', letterSpacing: '0.06em' }}>Kokorogotchi</span>
+          </div>
+          <div style={{ fontSize: 24, fontWeight: 700, marginTop: 4, letterSpacing: '0.12em', fontFamily: 'var(--font-serif)', color: 'var(--text)' }}>
             {state?.name || 'Kokoro'}
           </div>
         </div>
         <div style={{ textAlign: 'right' }}>
           <ConnectionBadge status={connectionStatus} />
-          <div className="mono" style={{
-            fontSize: 12, color: stage.color, marginTop: 3,
-            letterSpacing: '0.1em', textTransform: 'uppercase',
-            transition: 'color 2s',
+          <div style={{
+            fontFamily: 'var(--font-label)', fontSize: 10, color: stage.color, marginTop: 4,
+            letterSpacing: '0.35em', textTransform: 'uppercase',
+            transition: 'color 2s', fontWeight: 700,
           }}>
             {stage.label}
           </div>
@@ -167,7 +170,7 @@ export default function App() {
       />
 
       {/* Action buttons */}
-      <div style={{ display: 'flex', gap: 8 }}>
+      <div style={{ display: 'flex', gap: 2 }}>
         {[
           { id: 'memory', label: 'Memory' },
           { id: 'journal', label: 'Journal' },
@@ -177,13 +180,13 @@ export default function App() {
             key={a.id}
             onClick={() => togglePanel(a.id)}
             style={{
-              flex: 1, background: 'transparent',
-              border: openPanel === a.id ? '1px solid #ffffff22' : '1px solid var(--border)',
-              borderRadius: 12, padding: 10,
-              fontFamily: 'var(--font-mono)', fontSize: 8,
-              letterSpacing: '0.12em', textTransform: 'uppercase',
-              color: openPanel === a.id ? '#ffffff88' : 'var(--muted)',
-              cursor: 'pointer', transition: 'all 0.2s',
+              flex: 1, background: openPanel === a.id ? 'rgba(194,48,32,.08)' : 'transparent',
+              border: openPanel === a.id ? '1px solid rgba(194,48,32,.25)' : '1px solid var(--border)',
+              borderRadius: 4, padding: 10,
+              fontFamily: 'var(--font-label)', fontSize: 9,
+              letterSpacing: '0.35em', textTransform: 'uppercase',
+              color: openPanel === a.id ? 'var(--cream)' : 'var(--muted)',
+              cursor: 'pointer', transition: 'all 0.35s',
             }}
           >
             {a.label}
@@ -195,23 +198,23 @@ export default function App() {
       {openPanel === 'memory' && (
         <div className="fade-in" style={{
           background: 'var(--faint)', border: '1px solid var(--border)',
-          borderRadius: 16, padding: 13,
+          borderRadius: 4, padding: 13,
           display: 'flex', flexDirection: 'column', gap: 7,
         }}>
           <div className="mono" style={{
-            fontSize: 8, letterSpacing: '0.16em',
+            fontSize: 9, letterSpacing: '0.35em',
             color: 'var(--muted)', textTransform: 'uppercase', marginBottom: 4,
           }}>Care Log</div>
           <div style={{ maxHeight: 200, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 7 }}>
             {careLog.length === 0 ? (
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: '#ffffff28' }}>no memories yet</div>
+              <div style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--muted)', fontStyle: 'italic' }}>no memories yet</div>
             ) : careLog.map((entry, i) => (
               <div key={i} style={{
-                fontFamily: 'var(--font-mono)', fontSize: 10, color: '#ffffff44',
-                borderBottom: i < careLog.length - 1 ? '1px solid #ffffff07' : 'none',
+                fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--cream)',
+                borderBottom: i < careLog.length - 1 ? '1px solid var(--border)' : 'none',
                 paddingBottom: 6,
               }}>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: '#ffffff33', marginBottom: 3 }}>
+                <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, color: 'var(--muted)', marginBottom: 3, letterSpacing: '0.2em' }}>
                   {new Date(entry.at).toLocaleString()}
                 </div>
                 {entry.action}

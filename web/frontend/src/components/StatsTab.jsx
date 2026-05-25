@@ -32,10 +32,10 @@ export default function StatsTab({ state }) {
       {/* Care summary */}
       <div style={{
         background: 'var(--faint)', border: '1px solid var(--border)',
-        borderRadius: 16, padding: 14,
+        borderRadius: 4, padding: 14,
       }}>
         <div className="mono" style={{
-          fontSize: 8, letterSpacing: '0.16em',
+          fontSize: 9, letterSpacing: '0.35em',
           color: 'var(--muted)', textTransform: 'uppercase', marginBottom: 10,
         }}>Care Summary</div>
         <div style={{ display: 'flex', gap: 6 }}>
@@ -56,10 +56,10 @@ export default function StatsTab({ state }) {
       {/* Evolution map */}
       <div style={{
         background: 'var(--faint)', border: '1px solid var(--border)',
-        borderRadius: 16, padding: 14,
+        borderRadius: 4, padding: 14,
       }}>
         <div className="mono" style={{
-          fontSize: 8, letterSpacing: '0.16em',
+          fontSize: 9, letterSpacing: '0.35em',
           color: 'var(--muted)', textTransform: 'uppercase', marginBottom: 10,
         }}>Evolution Paths</div>
         <EvolutionMap currentStage={state?.evolution_stage || 'egg'} />

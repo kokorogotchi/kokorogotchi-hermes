@@ -1,11 +1,11 @@
 import React from 'react'
 
 const STATUS_MAP = {
-  connected:       { color: '#a8edca', label: 'Connected',    pulse: true  },
-  connecting:      { color: '#e8d5a3', label: 'Connecting…',  pulse: true  },
-  disconnected:    { color: '#e8a3c8', label: 'Disconnected', pulse: false },
-  gateway_offline: { color: '#e8d5a3', label: 'Agent offline', pulse: true  },
-  error:           { color: '#e8a3c8', label: 'Error',        pulse: false },
+  connected:       { color: '#6ee7a0', label: 'Connected',    pulse: true  },
+  connecting:      { color: '#f0c040', label: 'Connecting…',  pulse: true  },
+  disconnected:    { color: '#f06050', label: 'Disconnected', pulse: false },
+  gateway_offline: { color: '#f0c040', label: 'Agent offline', pulse: true  },
+  error:           { color: '#f06050', label: 'Error',        pulse: false },
 }
 
 /**
@@ -16,9 +16,9 @@ export default function ConnectionBadge({ status = 'connecting' }) {
 
   return (
     <div className="mono" style={{
-      fontSize: 9, color: s.color, letterSpacing: '0.12em',
+      fontSize: 9, color: s.color, letterSpacing: '0.25em',
       textTransform: 'uppercase',
-      opacity: s.pulse ? undefined : 0.7,
+      opacity: s.pulse ? undefined : 0.85,
       animation: s.pulse ? 'statusPulse 3s ease-in-out infinite' : 'none',
     }}>
       {s.label}

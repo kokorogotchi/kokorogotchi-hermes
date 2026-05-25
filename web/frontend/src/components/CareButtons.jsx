@@ -1,13 +1,39 @@
 import React from 'react'
 
+/** Inline SVG icons — ink brushwork style matching the yokai gallery */
+const ICONS = {
+  feed: (
+    <svg width="28" height="28" viewBox="0 0 28 28">
+      <ellipse cx="14" cy="18" rx="8" ry="9" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+      <path d="M10 10 Q14 6 18 10" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+      <line x1="14" y1="6" x2="14" y2="4" stroke="currentColor" strokeWidth="1.5"/>
+    </svg>
+  ),
+  play: (
+    <svg width="28" height="28" viewBox="0 0 28 28">
+      <path d="M14 4 L16 12 L24 10 L18 16 L24 22 L16 18 L14 26 L12 18 L4 22 L10 16 L4 10 L12 12 Z" fill="none" stroke="currentColor" strokeWidth="1.2"/>
+    </svg>
+  ),
+  rest: (
+    <svg width="28" height="28" viewBox="0 0 28 28">
+      <line x1="4" y1="8" x2="24" y2="8" stroke="currentColor" strokeWidth="2"/>
+      <line x1="6" y1="12" x2="22" y2="12" stroke="currentColor" strokeWidth="1.5"/>
+      <line x1="9" y1="12" x2="9" y2="26" stroke="currentColor" strokeWidth="1.5"/>
+      <line x1="19" y1="12" x2="19" y2="26" stroke="currentColor" strokeWidth="1.5"/>
+      <line x1="2" y1="8" x2="6" y2="8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="22" y1="8" x2="26" y2="8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  ),
+}
+
 const ACTIONS = [
-  { id: 'feed', icon: '🍄', label: 'Feed' },
-  { id: 'play', icon: '🌀', label: 'Play' },
-  { id: 'rest', icon: '◌', label: 'Rest' },
+  { id: 'feed', label: '奉納', en: 'Feed' },
+  { id: 'play', label: '戯れ', en: 'Play' },
+  { id: 'rest', label: '静寂', en: 'Rest' },
 ]
 
 /**
- * CareButtons — four care action buttons with cooldown timers,
+ * CareButtons — care action buttons with cooldown timers,
  * daily cap indicators, and loading state.
  */
 export default function CareButtons({ state, connectionStatus, performAction, isLoading, lastResponse, cooldowns, canAct, actionsToday, hideResponse }) {
@@ -31,9 +57,9 @@ export default function CareButtons({ state, connectionStatus, performAction, is
               onClick={() => performAction(action.id)}
               style={{ position: 'relative' }}
             >
-              <span className="icon">{action.icon}</span>
+              <span className="icon">{ICONS[action.id]}</span>
               <span className="nlabel">
-                {!gatewayConnected ? 'offline' : maxed ? 'maxed' : cooldown > 0 ? `${cooldown}s` : action.label}
+                {!gatewayConnected ? 'offline' : maxed ? 'maxed' : cooldown > 0 ? `${cooldown}s` : `${action.label} ${action.en}`}
               </span>
               {isLoading && canAct(action.id) === false && cooldown === 0 && !maxed && (
                 <span style={{
